@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<package> 
+  <metadata> 
+    <id>WCFDataServicesToolkit</id>
+    <title>WCF Data Services Toolkit</title> 
+    <version>0.6.1</version> 
+    <authors>Jonathan Carter</authors>
+    <description>Extensions to WCF Data Services that make it easier to expose arbitrary data sources.</description> 
+    <projectUrl>http://wcfdstoolkit.codeplex.com/</projectUrl>
+    <iconUrl>http://static.tumblr.com/hgchgxz/9ualgdf98/icon.png</iconUrl>
+    <tags>odata wcf .net40</tags>
+    <language>en-US</language> 
+  </metadata> 
+</package>

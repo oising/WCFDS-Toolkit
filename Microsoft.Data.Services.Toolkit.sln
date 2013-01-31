@@ -1,0 +1,77 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F99CE715-4417-4C66-A10F-FC811377AE2E}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		Microsoft.Data.Services.Toolkit.vsmdi = Microsoft.Data.Services.Toolkit.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Data.Services.Toolkit", "Microsoft.Data.Services.Toolkit\Microsoft.Data.Services.Toolkit.csproj", "{E38FE120-4439-4A23-B6F6-88CB0BE4E493}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Data.Services.Toolkit.Tests", "Microsoft.Data.Services.Toolkit.Tests\Microsoft.Data.Services.Toolkit.Tests.csproj", "{725C6E1E-7845-45E3-B618-244D6CEDC585}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{58074977-A557-48D9-83ED-914EA7777E7C}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Web", "http://localhost:49635", "{9CBEDC73-8FB0-4BD4-BDEA-BDBB0B5B5DB2}"
+	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "true"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		ProjectReferences = "{e38fe120-4439-4a23-b6f6-88cb0be4e493}|Microsoft.Data.Services.Toolkit.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_49635"
+		Debug.AspNetCompiler.PhysicalPath = "Web\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_49635\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_49635"
+		Release.AspNetCompiler.PhysicalPath = "Web\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_49635\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "Web\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Microsoft.Data.Services.Toolkit.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Staging|Any CPU = Staging|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E38FE120-4439-4A23-B6F6-88CB0BE4E493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E38FE120-4439-4A23-B6F6-88CB0BE4E493}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E38FE120-4439-4A23-B6F6-88CB0BE4E493}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E38FE120-4439-4A23-B6F6-88CB0BE4E493}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E38FE120-4439-4A23-B6F6-88CB0BE4E493}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{E38FE120-4439-4A23-B6F6-88CB0BE4E493}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{725C6E1E-7845-45E3-B618-244D6CEDC585}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{725C6E1E-7845-45E3-B618-244D6CEDC585}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{725C6E1E-7845-45E3-B618-244D6CEDC585}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{725C6E1E-7845-45E3-B618-244D6CEDC585}.Release|Any CPU.Build.0 = Release|Any CPU
+		{725C6E1E-7845-45E3-B618-244D6CEDC585}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{725C6E1E-7845-45E3-B618-244D6CEDC585}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{9CBEDC73-8FB0-4BD4-BDEA-BDBB0B5B5DB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CBEDC73-8FB0-4BD4-BDEA-BDBB0B5B5DB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CBEDC73-8FB0-4BD4-BDEA-BDBB0B5B5DB2}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CBEDC73-8FB0-4BD4-BDEA-BDBB0B5B5DB2}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{9CBEDC73-8FB0-4BD4-BDEA-BDBB0B5B5DB2}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CBEDC73-8FB0-4BD4-BDEA-BDBB0B5B5DB2}.Staging|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
