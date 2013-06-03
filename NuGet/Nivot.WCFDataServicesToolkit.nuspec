@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Nivot.WCFDataServicesToolkit</id>
+        <version>5.5.0</version>
+        <title>WCF Data Services Toolkit (OData v3)</title>
+        <authors>Jonathan Carter,Oisin Grehan</authors>
+        <owners>Oisin Grehan</owners>
+        <licenseUrl>http://opensource.org/licenses/MS-PL</licenseUrl>
+        <projectUrl>https://github.com/oising/WCFDS-Toolkit</projectUrl>
+        <iconUrl>http://static.tumblr.com/hgchgxz/9ualgdf98/icon.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>The WCF Data Services Toolkit is a set of extensions to WCF Data Services (the .NET implementation of OData) that attempt to make it easier to create OData services on top of arbitrary data stores without having deep knowledge of LINQ.
+
+It was born out of the needs of real-world services such as Netflix, eBay, Facebook, Twitpic, etc. and is being used to run all of those services today. We've proven that it can solve some interesting problems, and it's working great in production, but it's by no means a supported product or something that you should take a hard commitment on unless you know what you're doing.
+
+In order to know whether you qualify for using the toolkit to solve your solution, you should be looking to expose a non-relational data store (EF + WCF Data Services already solves the relational scenario) as an OData service.</description>
+        <summary>A set of extensions to WCF Data Services make it easier to create OData services on top of arbitrary data stores. It is an updated fork of a now dormant codeplex project, licensed MS-PL.</summary>
+        <releaseNotes>This package's version number will be keyed against Microsoft's own OData packages, so this package is compiled against their latest and greatest OData v3 implementation, 5.2.0. It is built against the latest source code at wcfdstoolkit.codeplex.com and also includes all currently unintegrated bug fixes submitted as patches/pull requests.</releaseNotes>
+        <language>es-US</language>
+        <tags>net40 wcf dataservices odata odatalib edmlib odatav3</tags>
+        <dependencies>
+            <dependency id="Microsoft.Data.Services" version="[5.5.0]" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Microsoft.Data.Services.Toolkit\bin\Release\Microsoft.Data.Services.Toolkit.dll" target="lib\net40\Microsoft.Data.Services.Toolkit.dll" />
+        <file src="..\Microsoft.Data.Services.Toolkit\bin\Release\Microsoft.Data.Services.Toolkit.pdb" target="lib\net40\Microsoft.Data.Services.Toolkit.pdb" />
+        <file src="..\Microsoft.Data.Services.Toolkit\bin\Release\Microsoft.Data.Services.Toolkit.XML" target="lib\net40\Microsoft.Data.Services.Toolkit.XML" />
+    </files>
+</package>
