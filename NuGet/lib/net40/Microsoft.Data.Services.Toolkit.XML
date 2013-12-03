@@ -1,0 +1,1135 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Data.Services.Toolkit</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.Data.Services.Toolkit.DataServiceConfigurationExtensions">
+            <summary>
+            Extension methods to get information from the Data Service configuration.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.DataServiceExtensions">
+            <summary>
+            Extension methods for the DataService class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.HttpDataServiceRequestExtensions">
+            <summary>
+            Extension methods for the <see cref="T:System.Web.HttpRequest"/> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.HttpDataServiceRequestExtensions.IsMetadataRequest(System.Web.HttpRequest)">
+            <summary>
+            Returns whether the client is requesting service metadata or not. 
+            </summary>
+            <param name="request">The current http request.</param>
+            <returns>A value indicating whether the request is requesting service metadata or not.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.HttpDataServiceRequestExtensions.IsRootCollectionListRequest(System.Web.HttpRequest)">
+            <summary>
+            Returns whether the client is requesting the root collection list.
+            </summary>
+            <param name="request">The current http request.</param>
+            <returns>A value indicating whether the client is requesting the root level collection list or not.</returns>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.Providers.GenericPagingProvider">
+            <summary>
+            A generic implementation for the <see cref="T:System.Data.Services.Providers.IDataServicePagingProvider"/> contract.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.GenericPagingProvider.#ctor(System.Collections.Generic.Dictionary{System.String,System.Int32},System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Data.Services.Toolkit.Providers.GenericPagingProvider"/> class.
+            </summary>
+            <param name="pageSizes">The page size for each Data Service entity.</param>
+            <param name="currentDataSource">The current data source object.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.GenericPagingProvider.GetContinuationToken(System.Collections.IEnumerator)">
+            <summary>
+            Returns the next-page token to put in the $skiptoken query option.
+            </summary>
+            <param name="enumerator">Enumerator for which the continuation token is being requested.</param>
+            <returns>The next-page token as a collection of primitive types.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.GenericPagingProvider.SetContinuationToken(System.Linq.IQueryable,System.Data.Services.Providers.ResourceType,System.Object[])">
+            <summary>
+            Gets the next-page token from the $skiptoken query option in the request URI.
+            </summary>
+            <param name="query">Query for which the continuation token is being provided.</param>
+            <param name="resourceType">Resource type of the result on which the $skip token is to be applied.</param>
+            <param name="continuationToken">Continuation token parsed into primitive type values.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.GenericPagingProvider.IsTopRequest">
+            <summary>
+            Determines whether is a top request or not based on the query string parameters.
+            </summary>
+            <returns>A System.Boolean value that indicates whether $top parameter was provided or not.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.GenericPagingProvider.SupportsType(System.Type)">
+            <summary>
+            Determines if entity's page size is defined in Data Service configuration.
+            </summary>
+            <param name="type">The entity type.</param>
+            <returns>A System.Boolean value that indicates whether the entity's page size was set or not.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.GenericPagingProvider.PageSizeFor(System.Type)">
+            <summary>
+            Gets the page size for a given entity type from Data Service configuration.
+            </summary>
+            <param name="type">The entity type.</param>
+            <returns>The page size for the given entity.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.GenericPagingProvider.CurrentOffset">
+            <summary>
+            Gets the $skip parameter from the query string.
+            </summary>
+            <returns>The skip value provided as part of the query string.</returns>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.Providers.EntityUrlReadOnlyStreamProvider">
+            <summary>
+            Provides an easy way to return streamed content from an Uri.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.EntityUrlReadOnlyStreamProvider.GetReadStream(System.Object,System.String,System.Nullable{System.Boolean},System.Data.Services.DataServiceOperationContext)">
+            <summary>
+            Returns the default stream that is associated with an entity that has a binary property.
+            </summary>
+            <param name="entity">The entity for which the descriptor object should be returned.</param>
+            <param name="etag">The eTag value sent as part of the HTTP request that is sent to the data service.</param>
+            <param name="checkETagForEquality">A nullable System.Boolean value that determines the type of eTag that is used.</param>
+            <param name="operationContext">The System.Data.Services.DataServiceOperationContext instance that processes the request.</param>
+            <returns>The data System.IO.Stream that contains the binary property data of the entity.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.EntityUrlReadOnlyStreamProvider.GetReadStreamUri(System.Object,System.Data.Services.DataServiceOperationContext)">
+            <summary>
+            Returns the URI that is used to request the data stream that is associated with the binary property of an entity.
+            </summary>
+            <param name="entity">The entity that has the associated binary data stream.</param>
+            <param name="operationContext">The System.Data.Services.DataServiceOperationContext 
+            instance used by the data service to process the request.</param>
+            <returns>A System.Uri value that is used to request the binary data stream.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.EntityUrlReadOnlyStreamProvider.GetStreamContentType(System.Object,System.Data.Services.DataServiceOperationContext)">
+            <summary>
+            Returns the content type of the stream that is associated with the specified entity.
+            </summary>
+            <param name="entity">The entity that has the associated binary data stream.</param>
+            <param name="operationContext">The System.Data.Services.DataServiceOperationContext 
+            instance used by the data service to process the request.</param>
+            <returns>A valid Content-Type of the binary data.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.EntityUrlReadOnlyStreamProvider.GetStreamETag(System.Object,System.Data.Services.DataServiceOperationContext)">
+            <summary>
+            Returns the eTag of the data stream that is associated with the specified entity.
+            </summary>
+            <param name="entity">The entity that has the associated binary data stream.</param>
+            <param name="operationContext">The System.Data.Services.DataServiceOperationContext 
+            instance used by the data service to process the request.</param>
+            <returns>ETag of the stream associated with the entity.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.EntityUrlReadOnlyStreamProvider.GetWriteStream(System.Object,System.String,System.Nullable{System.Boolean},System.Data.Services.DataServiceOperationContext)">
+            <summary>
+            Returns the stream that the data service uses to write the contents of a binary property that is associated with an entity.
+            </summary>
+            <param name="entity">The entity that has the associated binary stream.</param>
+            <param name="etag">The eTag value that is sent as part of the HTTP request that is sent to the data service.</param>
+            <param name="checkETagForEquality">A nullable System.Boolean value that determines the type of eTag is used.</param>
+            <param name="operationContext">The System.Data.Services.DataServiceOperationContext 
+            instance that is used by the data service to process the request.</param>
+            <returns>A valid System.Stream the data service uses to write the contents of a 
+            binary property that is associated with the entity.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.EntityUrlReadOnlyStreamProvider.DeleteStream(System.Object,System.Data.Services.DataServiceOperationContext)">
+            <summary>
+            This method is invoked by the data services framework to obtain metadata about the stream associated with the specified entity.
+            </summary>
+            <param name="entity">The entity for which the descriptor object should be returned.</param>
+            <param name="operationContext">The System.Data.Services.DataServiceOperationContext instance that processes the request.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.EntityUrlReadOnlyStreamProvider.ResolveType(System.String,System.Data.Services.DataServiceOperationContext)">
+            <summary>
+            Returns a namespace-qualified type name that represents the type that the data service 
+            runtime must create for the Media Link Entry that is associated with the data stream 
+            for the Media Resource that is being inserted.
+            </summary>
+            <param name="entitySetName">Fully-qualified entity set name.</param>
+            <param name="operationContext">The System.Data.Services.DataServiceOperationContext 
+            instance that is used by the data service to process the request.</param>
+            <returns>A namespace-qualified type name.</returns>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.Providers.EntityUrlReadOnlyStreamProvider.StreamBufferSize">
+            <summary>
+            Gets the stream buffer size.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.Providers.IStreamEntity">
+            <summary>
+            Defines the contract for streaming content for entities with streamed content.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.IStreamEntity.GetContentTypeForStreaming">
+            <summary>
+            Calculates the content type for the streaming content.
+            </summary>
+            <returns>The streaming's content type.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.IStreamEntity.GetUrlForStreaming">
+            <summary>
+            Decides the <see cref="T:System.Uri"/> from where the content will be retrieved.
+            </summary>
+            <returns>An <see cref="T:System.Uri"/> that indicates where the content will be retrieved.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.Providers.IStreamEntity.GetStreamETag">
+            <summary>
+            Calculates the current stream etag.
+            </summary>
+            <returns>The current stream etag value.</returns>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.CollectionCountAttribute">
+            <summary>
+            Specifies whether the repository will handle the collection count by the '{Entity}Count' method.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.RepositoryOperationAttribute">
+            <summary>
+            Specifies the name of the repository method called by the runtime
+            instead of using naming conventions.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.RepositoryOperationAttribute.RepositoryMethod">
+            <summary>
+            Gets or sets a value indicating the name of the repository method.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.ForeignPropertyAttribute">
+            <summary>
+            Specifies whether a property is a Navigation Property allowing the repository to handle 'Get{Property}By{Entity}'
+            method to retrieve the items related to the entity.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.RepositorySelectManyOperationAttribute">
+            <summary>
+            Specifies the name of the parent and the alias for the navigation property 
+            if you don't use the Get{Entity}By{Property} convention method.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.RepositorySelectManyOperationAttribute.ParentAlias">
+            <summary>
+            Gets or sets the of parent alias.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.RepositorySelectManyOperationAttribute.PropertyAlias">
+            <summary>
+            Gets or sets the name of property alias.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.ForeignPropertyCountAttribute">
+            <summary>
+            Specifies whether a property is a Navigation Property allowing the repository to handle 'Count{Property}By{Entity}' 
+            method to count items related to the current entity.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.RepositoryBehaviorAttribute">
+            <summary>
+            Specify whether the repository method will manage the specified set to true.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.RepositoryBehaviorAttribute.HandlesEverything">
+            <summary>
+            Gets or sets a value indicating whether the repository method will handle everything.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.RepositoryBehaviorAttribute.HandlesFilter">
+            <summary>
+            Gets or sets a value indicating whether the repository method will handle filters.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.RepositoryBehaviorAttribute.HandlesOrderBy">
+            <summary>
+            Gets or sets a value indicating whether the repository method will handle order by.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.RepositoryBehaviorAttribute.HandlesSelect">
+            <summary>
+            Gets or sets a value indicating whether the repository method will handle select.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.RepositoryBehaviorAttribute.HandlesSkip">
+            <summary>
+            Gets or sets a value indicating whether the repository method will handle skip.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.RepositoryBehaviorAttribute.HandlesTop">
+            <summary>
+            Gets or sets a value indicating whether the repository method will handle top.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.SourcePropertyNameAttribute">
+            <summary>
+            Specifies the source property name for a property.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.SourcePropertyNameAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the SourcePropertyNameAttribute class.
+            </summary>
+            <param name="underlyingName">A string containing the underplaying name.</param>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.SourcePropertyNameAttribute.UnderlyingName">
+            <summary>
+            Gets or sets the underplaying name.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.PropertyInfoExtensions">
+            <summary>
+            Extension methods for the <see cref="T:System.Reflection.PropertyInfo"/> class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.RepositoryBehaviorExtensions">
+            <summary>
+            Extension methods for repository objects.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.RepositoryBehaviorExtensions.GetBehavior(System.Object,System.Reflection.MethodInfo)">
+            <summary>
+            Returns the <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.RepositoryBehaviorAttribute"/> based on the
+            repository <see cref="T:System.Reflection.MethodInfo"/> provided.
+            </summary>
+            <param name="repository">The repository object.</param>
+            <param name="repositoryMethod">The repository method information.</param>
+            <returns>The proper <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.RepositoryBehaviorAttribute"/>.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.RepositoryBehaviorExtensions.GetBehavior(System.Object,System.String)">
+            <summary>
+            Returns the <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.RepositoryBehaviorAttribute"/> based on the repository method name provided.
+            </summary>
+            <param name="repository">The repository object.</param>
+            <param name="repositoryMethodName">The repository method name.</param>
+            <returns>The proper <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.RepositoryBehaviorAttribute"/>.</returns>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.TypeExtensions">
+            <summary>
+            Extension methods for the <see cref="T:System.Type"/> class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataOperationExecutionHelper">
+            <summary>
+            Provides methods to execute Linq2Objects operations.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataOperationExecutionHelper.ExecuteLinq2ObjectsImplementation(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32)">
+            <summary>
+            Executes a Linq2Objects call to the Skip and Take methods to a given <see cref="T:System.Collections.IEnumerable"/> object.
+            </summary>
+            <param name="methodName">A string that indicates the name of the method.</param>
+            <param name="enumerable">An <see cref="T:System.Collections.IEnumerable"/> object that will be filtered.</param>
+            <param name="count">An integer value that specifies the Skip/Take value.</param>
+            <returns>A filtered <see cref="T:System.Collections.IEnumerable"/> object.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataOperationExecutionHelper.ExecuteLinq2ObjectsImplementation(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Linq.Expressions.Expression)">
+            <summary>
+            Executes a Linq2Objects expression to a given <see cref="T:System.Collections.IEnumerable"/> object.
+            </summary>
+            <param name="methodName">A string that indicates the name of the method.</param>
+            <param name="enumerable">An <see cref="T:System.Collections.IEnumerable"/> object that will be filtered.</param>
+            <param name="expression">An <see cref="T:System.Linq.Expressions.Expression"/> to be applied to the <see cref="T:System.Collections.IEnumerable"/> object.</param>
+            <returns>A filtered <see cref="T:System.Collections.IEnumerable"/> object.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataOperationExecutionHelper.EvalEnumerable(System.Object,System.Type)">
+            <summary>
+            Performs a ToArray call to a given object.
+            </summary>
+            <param name="result">The object to be converted as an array.</param>
+            <param name="elementType">The <see cref="T:System.Type"/> of the returned Enumerable element.</param>
+            <returns>A new array of the provided element type.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataOperationExecutionHelper.ExecuteProjection(Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation,System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            Executes the ExecuteProjectionTyped method to a given <see cref="T:System.Collections.IEnumerable"/> object.
+            </summary>
+            <param name="operation">The <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation"/> value.</param>
+            <param name="enumerable">An <see cref="T:System.Collections.IEnumerable"/> object.</param>
+            <returns>The projected result of the projection.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataOperationExecutionHelper.ExecuteProjectionTyped``1(System.Linq.Expressions.LambdaExpression,System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            Executes the ExecuteProjectionTyped method for a given <see cref="T:System.Linq.Expressions.LambdaExpression"/> to an <see cref="T:System.Collections.IEnumerable"/> object.
+            </summary>
+            <param name="expression">The <see cref="T:System.Linq.Expressions.LambdaExpression"/> value.</param>
+            <param name="enumerable">An <see cref="T:System.Collections.IEnumerable"/> object.</param>
+            <typeparam name="T">The type of the <see cref="T:System.Collections.IEnumerable"/> object.</typeparam>
+            <returns>The projected result of the projection.</returns>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataOperationResolver">
+            <summary>
+            Provides a way to get information about the repository based on a given <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataOperationResolver.#ctor(Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation)">
+            <summary>
+            Initializes a new instance of the ODataOperationResolver class. 
+            </summary>
+            <param name="operation">An <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation"/>.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataOperationResolver.For(Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation)">
+            <summary>
+            A fluent interface to resolve repository information.
+            </summary>
+            <param name="operation">An <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation"/>.</param>
+            <returns>A new instance of the <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataOperationResolver"/> class.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataOperationResolver.Repository(System.Func{System.String,System.Object})">
+            <summary>
+            Resolve the corresponding repository.
+            </summary>
+            <param name="resolver">A functional to determine the repository.</param>
+            <returns>A new repository instance.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataOperationResolver.Method(System.Object)">
+            <summary>
+            Determines which repository method should be called.
+            </summary>
+            <param name="repository">A repository instance.</param>
+            <returns>The <see cref="T:System.Reflection.MethodInfo"/> to be executed.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataOperationResolver.Arguments(System.Reflection.MethodInfo)">
+            <summary>
+            Determines the arguments that will be passed to the repository method.
+            </summary>
+            <param name="method">The <see cref="T:System.Reflection.MethodInfo"/> where the arguments will provided.</param>
+            <returns>An object[] containing the method arguments.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataOperationResolver.GetMethodName``1(System.Reflection.PropertyInfo)">
+            <summary>
+            Determines which repository method will be called.
+            </summary>
+            <typeparam name="T">The type of the navigation property attribute.</typeparam>
+            <param name="property">The <see cref="T:System.Reflection.PropertyInfo"/> marked with the <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.RepositorySelectManyOperationAttribute"/>.</param>
+            <returns>The name of the repository method to be executed.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataOperationResolver.GetMethodName``1(System.Type)">
+            <summary>
+            Determines which repository method will be called.
+            </summary>
+            <typeparam name="T">The type of the class attribute.</typeparam>
+            <param name="type">The type of the entity.</param>
+            <returns>Gets a collection count method name.</returns>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.PropertyDetails">
+            <summary>
+            Describes the projection plan for a property.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.PropertyDetails.PropertyInfo">
+            <summary>
+            Gets or sets the actual property reference.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.PropertyDetails.PropertySetter">
+            <summary>
+            Gets or sets the delegate to be executed while setting the property.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.ServiceModel.DispatchInspectorAttribute">
+            <summary>
+            Specifies whether a service will apply a provided message inspector. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.ServiceModel.DispatchInspectorAttribute.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the DispatchInspectorAttribute class.
+            </summary>
+            <param name="dispatcherType">The dispatcher implementation <see cref="T:System.Type"/>.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.ServiceModel.DispatchInspectorAttribute.System#ServiceModel#Description#IServiceBehavior#ApplyDispatchBehavior(System.ServiceModel.Description.ServiceDescription,System.ServiceModel.ServiceHostBase)">
+            <summary>
+            Applies the dispatcher behavior.
+            </summary>
+            <param name="serviceDescription">A <see cref="T:System.ServiceModel.Description.ServiceDescription"/> object containing the service description.</param>
+            <param name="serviceHostBase">A <see cref="T:System.ServiceModel.ServiceHostBase"/> object containing the service host base.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.ServiceModel.DispatchInspectorAttribute.System#ServiceModel#Description#IServiceBehavior#AddBindingParameters(System.ServiceModel.Description.ServiceDescription,System.ServiceModel.ServiceHostBase,System.Collections.ObjectModel.Collection{System.ServiceModel.Description.ServiceEndpoint},System.ServiceModel.Channels.BindingParameterCollection)">
+            <summary>
+            Adds the binding parameters.
+            </summary>
+            <param name="serviceDescription">A <see cref="T:System.ServiceModel.Description.ServiceDescription"/> object containing the service description.</param>
+            <param name="serviceHostBase">A <see cref="T:System.ServiceModel.ServiceHostBase"/> object containing the service host base.</param>
+            <param name="endpoints">A collection of <see cref="T:System.ServiceModel.Description.ServiceEndpoint"/> type.</param>
+            <param name="bindingParameters">A collection of binding parameters.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.ServiceModel.DispatchInspectorAttribute.System#ServiceModel#Description#IServiceBehavior#Validate(System.ServiceModel.Description.ServiceDescription,System.ServiceModel.ServiceHostBase)">
+            <summary>
+            Validates the service host and the service description to confirm that the service can run successfully.
+            </summary>
+            <param name="serviceDescription">A <see cref="T:System.ServiceModel.Description.ServiceDescription"/> object containing the service description.</param>
+            <param name="serviceHostBase">A <see cref="T:System.ServiceModel.ServiceHostBase"/> object containing the service host base.</param>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.ServiceModel.JsonInspector">
+            <summary>
+            Inspects incoming Requests for JSONP request detection,
+            when parses the input and generates the proper output 
+            for JSONP compliance.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.ServiceModel.JsonInspector.AfterReceiveRequest(System.ServiceModel.Channels.Message@,System.ServiceModel.IClientChannel,System.ServiceModel.InstanceContext)">
+            <summary>
+            Determines whether the requested message is JSONP. When detected
+            changes the message to be treated by the WCF Data services Runtime 
+            as a common JSON request and correlates the output with the requested
+            callback.
+            </summary>
+            <param name="request">Requested message.</param>
+            <param name="channel">Current client channel.</param>
+            <param name="instanceContext">Context where the service is running.</param>
+            <returns>Returns a correlation value indicating the requested callback (when applies).</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.ServiceModel.JsonInspector.BeforeSendReply(System.ServiceModel.Channels.Message@,System.Object)">
+            <summary>
+            Wraps the resulting content into a JSONP callback function 
+            extracted on the AfterReceiveReply message.
+            </summary>
+            <param name="reply">Outgoing response message.</param>
+            <param name="correlationState">Correlation state returned by the AfterReceiveReply method.</param>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.EnableOutputCacheAttribute">
+            <summary>
+            Marks an ODataService as OutputCache aware.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.EnableOutputCacheAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the EnableOutputCacheAttribute class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.EnableOutputCacheAttribute.GetServiceOutputCacheSettings(System.Type)">
+            <summary>
+            Looks for an OutputCacheSettingsAttribute instance from
+            the given service type.
+            </summary>
+            <param name="serviceType">Type of the service to extract the 
+            OuputCacheSettings instance from.</param>
+            <returns>Returns an OutputCacheSettingsAttribute instance (null when not present).</returns>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.EnableOutputCacheAttribute.ExpiresInSeconds">
+            <summary>
+            Gets or sets a value indicating the expiration time in seconds.
+            </summary>
+            <remarks>By default it uses 30 seconds.</remarks>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.EnableOutputCacheAttribute.HttpCacheability">
+            <summary>
+            Gets or sets a value indicating the HttpCacheability settings 
+            for the current service.
+            </summary>
+            <remarks>By default it uses HttpCacheability.ServerAndPrivate</remarks> 
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.DataServiceRouteExtensions">
+            <summary>
+            Add DataService routes extensions to the RouteCollection type.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.DataServiceRouteExtensions.AddDataServiceRoute``1(System.Web.Routing.RouteCollection)">
+            <summary>
+            Enables the RouteCollection to add Data Services.
+            </summary>
+            <typeparam name="TService">Data Service type implementation.</typeparam>
+            <param name="routes">RouteCollection currently being extended.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.DataServiceRouteExtensions.AddDataServiceRoute(System.Web.Routing.RouteCollection,System.Type)">
+            <summary>
+            Enables the RouteCollection to add Data Services.
+            </summary>
+            <param name="routes">RouteCollection currently being extended.</param>
+            <param name="dataServiceType">Data Service type implementation.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.DataServiceRouteExtensions.AddDataServiceRoute(System.Web.Routing.RouteCollection,System.Type,System.String)">
+            <summary>
+            Enables the RouteCollection to add Data Services.
+            </summary>
+            <param name="routes">RouteCollection currently being extended.</param>
+            <param name="dataServiceType">Data Service type implementation.</param>
+            <param name="prefix">Prefix to be used as service root.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.DataServiceRouteExtensions.AddDataServiceRoute``1(System.Web.Routing.RouteCollection,System.String)">
+            <summary>
+            Enables the RouteCollection to add Data Services.
+            </summary>
+            <typeparam name="TService">Data Service type implementation.</typeparam>
+            <param name="routes">RouteCollection currently being extended.</param>
+            /// <param name="prefix">Prefix to be used as service root.</param>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.ODataService`1">
+            <summary>
+            A custom DataService implementation.
+            </summary>
+            <typeparam name="T">The <see cref="T:System.Type"/> of the data service context.</typeparam>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.ODataService`1.#ctor">
+            <summary>
+            Initializes a new instance of the ODataService class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.ODataService`1.GetService(System.Type)">
+            <summary>
+            Returns the corresponding implementation based on the service type.
+            </summary>
+            <param name="serviceType">The <see cref="T:System.Type"/> of the service.</param>
+            <returns>An instance of the service implementation.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.ODataService`1.OnStartProcessingRequest(System.Data.Services.ProcessRequestArgs)">
+            <summary>
+            Configures the current <see cref="T:System.Web.HttpContext"/> cache if it is provided.
+            </summary>
+            <param name="args">A <see cref="T:System.Data.Services.ProcessRequestArgs"/> containing the arguments to be processed.</param>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataCompoundQueryOperation">
+            <summary>
+            Provides a type to describe an OData compound query operation.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataSelectManyQueryOperation">
+            <summary>
+            Provides a type to describe an OData select many operation.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataSelectOneQueryOperation">
+            <summary>
+            Provides a type to describe an OData select one operation.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation">
+            <summary>
+            Provides a type to describe an OData query operation.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation.IsPropertyInProjection(System.String)">
+            <summary>
+            Determines whether a property is a projected property or not.
+            </summary>
+            <param name="propertyName">The property name to be evaluated.</param>
+            <returns>A System.Boolean value that indicates whether the property is a projected property or not.</returns>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation.Current">
+            <summary>
+            Gets the current <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation"/> from the current <see cref="T:System.Web.HttpContext"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation.OfType">
+            <summary>
+            Gets or sets the operation <see cref="T:System.Type"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation.SkipCount">
+            <summary>
+            Gets or sets the operation SkipCount value.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation.TopCount">
+            <summary>
+            Gets or sets the operation TopCount value.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation.FilterExpression">
+            <summary>
+            Gets or sets the operation FilterExpression value.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation.IsCountRequest">
+            <summary>
+            Gets or sets a value indicating whether is a count operation or not.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation.OrderStack">
+            <summary>
+            Gets or sets the <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataOrderExpression"/> stack for the operation.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation.ProjectedProperties">
+            <summary>
+            Gets or sets the projected properties for the operation.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation.ProjectionExpression">
+            <summary>
+            Gets or sets the projection expression for the operation.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation.ProjectedType">
+            <summary>
+            Gets or sets the projected type for the operation.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation.ContinuationToken">
+            <summary>
+            Gets or sets the continuation token value for the operation.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation.ContextParameters">
+            <summary>
+            Gets or sets the operation's context parameters.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataSelectOneQueryOperation.Parent">
+            <summary>
+            Gets or sets a parent operation for this operation.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataSelectOneQueryOperation.Keys">
+            <summary>
+            Gets or sets the key identifiers for this operation.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataSelectOneQueryOperation.Key">
+            <summary>
+            Gets the first or default key identifier.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataSelectManyQueryOperation.NavigationProperty">
+            <summary>
+            Gets or sets the navigation property name.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataSelectManyQueryOperation.NavigationPropertyType">
+            <summary>
+            Gets the navigation property <see cref="T:System.Type"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataSelectManyQueryOperation.NavigationPropertyInfo">
+            <summary>
+            Gets the navigation property <see cref="T:System.Reflection.PropertyInfo"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataCompoundQueryOperation.AnonymousGetManyOperation">
+            <summary>
+            Gets or sets the <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataSelectManyQueryOperation"/> for a compound query.
+            </summary>
+            <value>The anonymous get many operation.</value>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataContext">
+            <summary>
+            A custom implementation for the <see cref="T:System.Data.Services.Providers.IDataServiceUpdateProvider"/> contract.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataContext.CreateQuery``1">
+            <summary>
+            Creates an <see cref="T:System.Linq.IQueryable"/> for a given type.
+            </summary>
+            <typeparam name="T">The <see cref="T:System.Linq.IQueryable"/> type.</typeparam>
+            <returns>An <see cref="T:System.Linq.IQueryable"/> for a given type.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataContext.GetResource(System.Linq.IQueryable,System.String)">
+            <summary>
+            Evaluates a custom <see cref="T:System.Linq.Expressions.ExpressionVisitor"/> to get a resource.
+            </summary>
+            <param name="query">The <see cref="T:System.Linq.IQueryable"/> which contains the 
+            expression to get the resource.</param>
+            <param name="fullTypeName">The resource full type name.</param>
+            <returns>The expected resource.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataContext.AddReferenceToCollection(System.Object,System.String,System.Object)">
+            <summary>
+            Sets the current operation as 'AddReferenceToCollection' and the involved entities references.
+            </summary>
+            <param name="targetResource">The target resource.</param>
+            <param name="propertyName">The property name.</param>
+            <param name="resourceToBeAdded">The resource to be added.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataContext.CreateResource(System.String,System.String)">
+            <summary>
+            Executes the repository method CreateDefaultEntity and sets the current operation value to 'CreateResource'.
+            </summary>
+            <param name="containerName">The name of the container.</param>
+            <param name="fullTypeName">The resource's full type name.</param>
+            <returns>The new resource.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataContext.DeleteResource(System.Object)">
+            <summary>
+            Assigns to the current entity the resource to be removed and sets the current operation value to 'DeleteResource'.
+            </summary>
+            <param name="targetResource">The resource to be removed.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataContext.ResetResource(System.Object)">
+            <summary>
+            Sets the current operation value to 'ModifyResource' and wraps 
+            the resource into an enumerable returning the first one.
+            </summary>
+            <param name="resource">The target resource.</param>
+            <returns>The first resource in the collection.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataContext.ResolveResource(System.Object)">
+            <summary>
+            Wraps the resource into an enumerable and returns the first one.
+            </summary>
+            <param name="resource">The current resource.</param>
+            <returns>The first resource in the collection.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataContext.SetValue(System.Object,System.String,System.Object)">
+            <summary>
+            Sets every resource value by reflection.
+            </summary>
+            <param name="targetResource">The target resource.</param>
+            <param name="propertyName">The property name.</param>
+            <param name="propertyValue">The property value.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataContext.GetValue(System.Object,System.String)">
+            <summary>
+            Gets every resource value by reflection.
+            </summary>
+            <param name="targetResource">The target resource.</param>
+            <param name="propertyName">The property name.</param>
+            <returns>The resource property.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataContext.SaveChanges">
+            <summary>
+            Calls the corresponding operation based on the current operation field.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataContext.ClearChanges">
+            <summary>
+            Throws <see cref="T:System.NotImplementedException"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataContext.SetReference(System.Object,System.String,System.Object)">
+            <summary>
+            Throws <see cref="T:System.NotImplementedException"/>.
+            </summary>
+            <param name="targetResource">The target resource.</param>
+            <param name="propertyName">The property name.</param>
+            <param name="propertyValue">The property value.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataContext.RemoveReferenceFromCollection(System.Object,System.String,System.Object)">
+            <summary>
+            Throws <see cref="T:System.NotImplementedException"/>.
+            </summary>
+            <param name="targetResource">The target resource.</param>
+            <param name="propertyName">The property name.</param>
+            <param name="resourceToBeRemoved">The resource to be removed from the collection.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataContext.SetConcurrencyValues(System.Object,System.Nullable{System.Boolean},System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets concurrency values to avoid concurrency issues.
+            </summary>
+            <param name="resourceCookie">The resource cookie object.</param>
+            <param name="checkForEquality">A value indicating whether it will check for equality or not.</param>
+            <param name="concurrencyValues">The concurrency values to be analyzed.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataContext.RepositoryFor(System.String)">
+            <summary>
+            Obtains information about which repository will be used based on the entity full type name.
+            </summary>
+            <param name="fullTypeName">The entity full type name.</param>
+            <returns>A repository for a given entity full type name.</returns>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataEntityExtensions">
+            <summary>
+            Extension methods for OData entities.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionExtensions">
+            <summary>
+            Extension methods for the <see cref="T:System.Linq.Expressions.Expression"/> class and  <see cref="T:System.Linq.Expressions.LambdaExpression"/> class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor">
+            <summary>
+            Parses the OData query expression tree and generates the proper <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.#ctor(System.Linq.Expressions.Expression)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor"/> class.
+            </summary>
+            <param name="expression">The initial <see cref="T:System.Linq.Expressions.Expression"/> to be parsed.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.Eval">
+            <summary>
+            Evaluates the OData query <see cref="T:System.Linq.Expressions.Expression"/>.
+            </summary>
+            <returns>The <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation"/>.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.VisitMethodCall(System.Linq.Expressions.MethodCallExpression)">
+            <summary>
+            Parses the <see cref="T:System.Linq.Expressions.MethodCallExpression"/> to enqueue a new operation 
+            tuple based on the expression method name.
+            </summary>
+            <param name="node">The node to be parsed.</param>
+            <returns>The visited node <see cref="T:System.Linq.Expressions.Expression"/>.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.VisitConstant(System.Linq.Expressions.ConstantExpression)">
+            <summary>
+            Enqueue a new operation tuple with the 'Root' value name and the given expression.
+            </summary>
+            <param name="node">The operation tuple <see cref="T:System.Linq.Expressions.Expression"/>.</param>
+            <returns>The provided <see cref="T:System.Linq.Expressions.ConstantExpression"/>.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.HandleWhere(System.Linq.Expressions.Expression)">
+            <summary>
+            Enqueue a new operation tuple with the 'Where' value name and the given expression.
+            </summary>
+            <param name="node">The operation tuple <see cref="T:System.Linq.Expressions.Expression"/>.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.HandleOrder(System.Linq.Expressions.Expression,System.String)">
+            <summary>
+            Enqueue a new operation tuple with the 'Order' value name, the given expression and the method name.
+            </summary>
+            <param name="node">The operation tuple <see cref="T:System.Linq.Expressions.Expression"/>.</param>
+            <param name="methodName">The method name.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.HandleSelect(System.Linq.Expressions.Expression)">
+            <summary>
+            Enqueue a new operation tuple with the 'SelectMany' or 'Select' value name and the given expression.
+            </summary>
+            <param name="node">The operation tuple <see cref="T:System.Linq.Expressions.Expression"/>.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.HandleTop(System.Linq.Expressions.Expression)">
+            <summary>
+            Enqueue a new operation tuple with the 'Take' value name and the given expression.
+            </summary>
+            <param name="node">The operation tuple <see cref="T:System.Linq.Expressions.Expression"/>.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.HandleSkip(System.Linq.Expressions.Expression)">
+            <summary>
+            Enqueue a new operation tuple with the 'Skip' value name and the given expression.
+            </summary>
+            <param name="node">The operation tuple <see cref="T:System.Linq.Expressions.Expression"/>.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.HandleSelectMany(System.Linq.Expressions.Expression)">
+            <summary>
+            Enqueue a new operation tuple with the 'SelectMany' value name and the given expression.
+            </summary>
+            <param name="node">The operation tuple <see cref="T:System.Linq.Expressions.Expression"/>.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.HandleCount">
+            <summary>
+            Enqueue a new operation tuple with the 'Count' value name.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.EvalForQueue(System.Collections.Generic.Queue{Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.OperationTuple})">
+            <summary>
+            Evaluates the <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.OperationTuple"/> queue to return a proper <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation"/>.
+            </summary>
+            <param name="tuples">The <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.OperationTuple"/> queue.</param>
+            <returns>An <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation"/>.</returns>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.OperationTuple">
+            <summary>
+            Provides a type to describe an operation tuple composed by a name and a <see cref="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.OperationTuple.Expression"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.OperationTuple.Name">
+            <summary>
+            Gets or sets the operation tuple name.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.OperationTuple.Expression">
+            <summary>
+            Gets or sets the operation tuple <see cref="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataExpressionVisitor.OperationTuple.Expression"/>.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataOrderExpression">
+            <summary>
+            Represents an order expression including its method name.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataOrderExpression.OrderMethodName">
+            <summary>
+            Gets or sets the order by method name.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataOrderExpression.Expression">
+            <summary>
+            Gets or sets the order by expression.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataQuery`1">
+            <summary>
+            A custom implementation of the <see cref="T:System.Linq.IOrderedQueryable"/> contract.
+            </summary>
+            <typeparam name="T">The <see cref="T:System.Type"/> of the ODataQuery.</typeparam>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataQuery`1.#ctor(Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryProvider{`0})">
+            <summary>
+            Initializes a new instance of the ODataQuery class.
+            </summary>
+            <param name="provider">A provider that implements the <see cref="T:System.Linq.IQueryProvider"/> contract.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataQuery`1.#ctor(Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryProvider{`0},System.Linq.Expressions.Expression)">
+            <summary>
+            Initializes a new instance of the ODataQuery class.
+            </summary>
+            <param name="provider">A provider that implements the <see cref="T:System.Linq.IQueryProvider"/> contract.</param>
+            <param name="expression">An OData <see cref="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQuery`1.Expression"/>.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataQuery`1.GetEnumerator">
+            <summary>
+            Executes the provided OData query expression.
+            </summary>
+            <returns>The result of the OData query expression execution.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataQuery`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Executes the provided OData query expression.
+            </summary>
+            <returns>The result of the OData query expression execution.</returns>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQuery`1.ElementType">
+            <summary>
+            Gets the element type of the current ODataQuery.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQuery`1.Expression">
+            <summary>
+            Gets the OData query <see cref="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQuery`1.Expression"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQuery`1.Provider">
+            <summary>
+            Gets the current <see cref="T:System.Linq.IQueryProvider"/> implementation.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryProvider`1">
+            <summary>
+            A custom implementation of the <see cref="T:System.Linq.IQueryProvider"/> contract.
+            </summary>
+            <typeparam name="T">The query provider type.</typeparam>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryProvider`1.#ctor(System.Func{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the ODataQueryProvider class.
+            </summary>
+            <param name="resolver">A functional to resolve the repository.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryProvider`1.CreateQuery``1(System.Linq.Expressions.Expression)">
+            <summary>
+            Creates a new <see cref="T:System.Linq.IQueryable"/> instance for a given <see cref="T:System.Linq.Expressions.Expression"/>.
+            </summary>
+            <typeparam name="TElement">The type of the <see cref="T:System.Linq.IQueryable"/>.</typeparam>
+            <param name="expression">The OData query <see cref="T:System.Linq.Expressions.Expression"/>.</param>
+            <returns>A new ODataQuery instance of the provided type.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryProvider`1.CreateQuery(System.Linq.Expressions.Expression)">
+            <summary>
+            Creates a new <see cref="T:System.Linq.IQueryable"/> instance for a given <see cref="T:System.Linq.Expressions.Expression"/>.
+            </summary>
+            <param name="expression">The OData query <see cref="T:System.Linq.Expressions.Expression"/>.</param>
+            <returns>A new ODataQuery instance.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryProvider`1.Execute``1(System.Linq.Expressions.Expression)">
+            <summary>
+            Executes an OData <see cref="T:System.Linq.Expressions.Expression"/>.
+            </summary>
+            <typeparam name="TResult">The type of the result.</typeparam>
+            <param name="expression">The OData query <see cref="T:System.Linq.Expressions.Expression"/>.</param>
+            <returns>The result of the OData expression execution.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryProvider`1.Execute(System.Linq.Expressions.Expression)">
+            <summary>
+            Executes an OData <see cref="T:System.Linq.Expressions.Expression"/>.
+            </summary>
+            <param name="expression">The OData query <see cref="T:System.Linq.Expressions.Expression"/>.</param>
+            <returns>The result of the OData expression execution.</returns>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryProvider`1.ExecuteQuery(Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation)">
+            <summary>
+            Executes an <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation"/>.
+            </summary>
+            <param name="operation">The <see cref="T:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryOperation"/> to be executed..</param>
+            <returns>The result of the OData expression execution.</returns>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryProvider`1.ContinuationToken">
+            <summary>
+            Gets or sets the continuation token for provider.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryProvider`1.SkipTakeBasedPaging">
+            <summary>
+            Gets or sets a value indicating whether the paging is skip/take based or not.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.QueryModel.ODataQueryProvider`1.ContextParameters">
+            <summary>
+            Gets the context paramenters.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.ServiceModel.JsonBodyWriter">
+            <summary>
+            Custom BodyWriter for creating JSONP Responses.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.ServiceModel.JsonBodyWriter.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the JsonBodyWriter class.
+            </summary>
+            <param name="content">Content to be written.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.ServiceModel.JsonBodyWriter.#ctor(System.String,System.Text.Encoding)">
+            <summary>
+            Initializes a new instance of the JsonBodyWriter class.
+            </summary>
+            <param name="content">Content to be written.</param>
+            <param name="contentEncoding">Encoding to be used on the writing.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.ServiceModel.JsonBodyWriter.OnWriteBodyContents(System.Xml.XmlDictionaryWriter)">
+            <summary>
+            Writes the given content to output writer.
+            </summary>
+            <param name="writer">Output writer instance.</param>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.UrlSanitizer">
+            <summary>
+            Sanitizes url characters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.UrlSanitizer.#ctor(Microsoft.Data.Services.Toolkit.UrlSettingsAttribute)">
+            <summary>
+            Initializes a new instance of the UrlSanitizer class.
+            </summary>
+            <param name="urlSettings">The url settings for the sanitization process.</param>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.UrlSanitizer.EnableOAuthSupport">
+            <summary>
+            Enables OAuth support.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.UrlSanitizer.Sanitize(System.String)">
+            <summary>
+            Executes the Sanitization process.
+            </summary>
+            <param name="uri">The Uri to be sanitized.</param>
+            <returns>The sanitized <see cref="T:System.Uri"/>.</returns>
+        </member>
+        <member name="T:Microsoft.Data.Services.Toolkit.UrlSettingsAttribute">
+            <summary>
+            Specifies the url settings.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.UrlSettingsAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Data.Services.Toolkit.UrlSettingsAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Services.Toolkit.UrlSettingsAttribute.GetServiceUrlSettings(System.Type)">
+            <summary>
+            Retrieves the service url settings.
+            </summary>
+            <param name="serviceType">The <see cref="T:System.Type"/> of the service.</param>
+            <returns>The <see cref="T:Microsoft.Data.Services.Toolkit.UrlSettingsAttribute"/> value.</returns>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.UrlSettingsAttribute.ClearPorts">
+            <summary>
+            Gets or sets whether any ports contained within the requesting URI should be removed. The default is true.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.UrlSettingsAttribute.EscapedCharacters">
+            <summary>
+            Gets or sets the supported url escaped characters.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Services.Toolkit.UrlSettingsAttribute.Host">
+            <summary>
+            Gets or sets the host.
+            </summary>
+        </member>
+    </members>
+</doc>

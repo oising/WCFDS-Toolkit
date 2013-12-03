@@ -137,6 +137,13 @@
             <param name="text">String that needs seconds padding</param>
             <returns>DateTime string after adding seconds padding</returns>
         </member>
+        <member name="M:System.Spatial.PlatformHelper.ConvertDateTimeToStringInternal(System.DateTime)">
+            <summary>
+            Converts the DateTime to a string, internal method.
+            </summary>
+            <param name="dateTime">DateTime to convert to String.</param>
+            <returns>Converted String.</returns>
+        </member>
         <member name="M:System.Spatial.PlatformHelper.ConvertDateTimeToString(System.DateTime)">
             <summary>
             Converts a DateTime to a string.
@@ -158,6 +165,13 @@
             </summary>
             <param name="type">Type on which to call this helper method.</param>
             <returns>TypeCode representing the specified type.</returns>
+        </member>
+        <member name="M:System.Spatial.PlatformHelper.GetUnicodeCategory(System.Char)">
+            <summary>
+            Gets the Unicode Category of the specified character.
+            </summary>
+            <param name="c">Character to get category of.</param>
+            <returns>Category of the character.</returns>
         </member>
         <member name="M:System.Spatial.PlatformHelper.IsProperty(System.Reflection.MemberInfo)">
             <summary>
@@ -230,6 +244,15 @@
             <param name="argTypes">Array of argument types for the constructor.</param>
             <returns>ConstructorInfo for the constructor with the specified characteristics if found, otherwise null.</returns>
         </member>
+        <member name="M:System.Spatial.PlatformHelper.TryGetMethod(System.Type,System.String,System.Type[],System.Reflection.MethodInfo@)">
+            <summary>
+            Tries to the get method from the type, returns null if not found.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="name">The name.</param>
+            <param name="parameterTypes">The parameter types.</param>
+            <returns>Returns True if found.</returns>
+        </member>
         <member name="M:System.Spatial.PlatformHelper.GetMethod(System.Type,System.String,System.Boolean,System.Boolean)">
             <summary>
             Gets a method on the specified type.
@@ -264,6 +287,15 @@
             </summary>
             <param name="type">Type on which to call this helper method.</param>
             <returns>All types nested in the current type</returns>
+        </member>
+        <member name="M:System.Spatial.PlatformHelper.CreateCompiled(System.String,System.Text.RegularExpressions.RegexOptions)">
+            <summary>
+            Creates a Compiled Regex expression
+            </summary>
+            <param name="pattern">Pattern to match.</param>
+            <param name="options">Options to use.</param>
+            <returns>Regex expression to match supplied patter</returns>
+            <remarks>Is marked as compiled option only in platforms otherwise RegexOption.None is used</remarks>
         </member>
         <member name="T:Microsoft.Data.Spatial.GeoJsonObjectFormatterImplementation">
             <summary>
@@ -6598,36 +6630,25 @@
             Namespace for xmlns
             </summary>
         </member>
-        <member name="T:DataFxAssemblyRef">
-            <summary>Current assembly reference</summary>
-            <remarks>DO NOT FORGET TO ALSO UPDATE AssemblyRefs.vb</remarks>
+        <member name="T:AssemblyRef">
+            <summary>
+            Sets public key string for friend assemblies.
+            </summary>
         </member>
-        <member name="T:DataFxAssemblyRef.Name">
-            <summary>Current assembly names</summary>
+        <member name="F:AssemblyRef.ProductPublicKey">
+            <summary>ProductPublicKey is an official MS supported public key for external releases.</summary>
         </member>
-        <member name="T:DataFxAssemblyRef.File">
-            <summary>Current assembly file names</summary>
+        <member name="F:AssemblyRef.TestPublicKey">
+            <summary>TestPublicKey is an unsupported strong key for testing and internal use only</summary>
         </member>
-        <member name="F:DataFxAssemblyRef.File.DotNetFrameworkV4_ClientReferenceAssemblyPath">
-            <summary>where to find desktop reference client sku reference assemblies</summary>
+        <member name="F:AssemblyRef.ProductPublicKeyToken">
+            <summary>Dont know what this is</summary>
         </member>
-        <member name="F:DataFxAssemblyRef.File.DotNetFrameworkV4_ReferenceAssemblyPath">
-            <summary>where to find desktop reference extended sku reference assemblies</summary>
+        <member name="F:AssemblyRef.OfficialSilverLightPublicKeyToken">
+            <summary>Used for comparison with external assemblies for silverlight like Microsoft.VisualBasic.</summary>
         </member>
-        <member name="F:DataFxAssemblyRef.File.DotNetFrameworkV4_InstallPath">
-            <summary>where find executable binaries</summary>
-        </member>
-        <member name="F:DataFxAssemblyRef.File.DS_SilverlightReferenceAssemblyPath">
-            <summary>where to find silverlight reference assemblies</summary>
-        </member>
-        <member name="P:DataFxAssemblyRef.File.EF_InstallPath">
-            <summary>where find executable binaries</summary>
-        </member>
-        <member name="P:DataFxAssemblyRef.File.EF_ReferenceAssemblyPath">
-            <summary>where to find desktop reference assemblies</summary>
-        </member>
-        <member name="P:DataFxAssemblyRef.File.DE_ReferenceAssemblyPath">
-            <summary>where to find desktop reference assemblies</summary>
+        <member name="F:AssemblyRef.OfficialDesktopPublicKeyToken">
+            <summary>Used for comparison with external assemblies for desktop like Microsoft.VisualBasic.</summary>
         </member>
         <member name="T:System.Spatial.TextRes">
              <summary>

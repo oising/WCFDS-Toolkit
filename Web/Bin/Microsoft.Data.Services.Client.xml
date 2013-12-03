@@ -162,43 +162,27 @@
             Or null if it is not possible to determine the stream read link.
             </returns>
         </member>
-        <member name="M:System.Data.Services.Client.ODataEntityMetadataBuilder.GetStreamContentType(System.String)">
-            <summary>
-            Gets the content type of a stream property value.
-            </summary>
-            <param name="streamPropertyName">The name of the stream property the content type is computed for; 
-            or null for the default media resource.</param>
-            <returns>
-            The content type for the specified stream property or the default media resource.
-            Or null if it is not possible to determine the stream content type.
-            </returns>
-        </member>
-        <member name="M:System.Data.Services.Client.ODataEntityMetadataBuilder.GetStreamETag(System.String)">
-            <summary>
-            Gets the etag of a stream property value.
-            </summary>
-            <param name="streamPropertyName">The name of the stream property the etag is computed for; 
-            or null for the default media resource.</param>
-            <returns>
-            The etag for the specified stream property or the default media resource.
-            Or null if it is not possible to determine the stream etag.
-            </returns>
-        </member>
-        <member name="M:System.Data.Services.Client.ODataEntityMetadataBuilder.GetNavigationLinkUri(System.String)">
+        <member name="M:System.Data.Services.Client.ODataEntityMetadataBuilder.GetNavigationLinkUri(System.String,System.Uri,System.Boolean)">
             <summary>
             Gets the navigation link URI for the specified navigation property.
             </summary>
             <param name="navigationPropertyName">The name of the navigation property to get the navigation link URI for.</param>
+            <param name="navigationLinkUrl">The value of the link URI as seen on the wire or provided explicitly by the user or previously returned by the metadata builder, which may be null.</param>
+            <param name="hasNavigationLinkUrl">true if the value of the <paramref name="navigationLinkUrl"/> was seen on the wire or provided explicitly by the user or previously returned by
+            the metadata builder, false otherwise. This flag allows the metadata builder to determine whether a null navigation link url is an uninitialized value or a value that was set explicitly.</param>
             <returns>
             The navigation link URI for the navigation property.
             null if its not possible to determine the navigation link for the specified navigation property.
             </returns>
         </member>
-        <member name="M:System.Data.Services.Client.ODataEntityMetadataBuilder.GetAssociationLinkUri(System.String)">
+        <member name="M:System.Data.Services.Client.ODataEntityMetadataBuilder.GetAssociationLinkUri(System.String,System.Uri,System.Boolean)">
             <summary>
             Gets the association link URI for the specified navigation property.
             </summary>
             <param name="navigationPropertyName">The name of the navigation property to get the association link URI for.</param>
+            <param name="associationLinkUrl">The value of the link URI as seen on the wire or provided explicitly by the user or previously returned by the metadata builder, which may be null.</param>
+            <param name="hasAssociationLinkUrl">true if the value of the <paramref name="associationLinkUrl"/> was seen on the wire or provided explicitly by the user or previously returned by
+            the metadata builder, false otherwise. This flag allows the metadata builder to determine whether a null association link url is an uninitialized value or a value that was set explicitly.</param>
             <returns>
             The association link URI for the navigation property.
             null if its not possible to determine the association link for the specified navigation property.
@@ -251,11 +235,13 @@
         </member>
         <member name="M:System.Data.Services.Client.ODataUriBuilder.BuildEntityInstanceUri(System.Uri,Microsoft.Data.Edm.Values.IEdmStructuredValue)">
             <summary>
-            Builds the entity instance URI for the specified <paramref name="entityInstance"/>.
+            Appends to create the entity instance URI for the specified <paramref name="entityInstance"/>.
             </summary>
-            <param name="baseUri">The URI to append to.</param>
+            <param name="baseUri">The URI to append to</param>
             <param name="entityInstance">The entity instance to use.</param>
-            <returns>The entity instance URI.</returns>
+            <returns>
+            The entity instance URI.
+            </returns>
         </member>
         <member name="M:System.Data.Services.Client.ODataUriBuilder.BuildStreamEditLinkUri(System.Uri,System.String)">
             <summary>
@@ -828,6 +814,74 @@
             <param name="stringValue">The string value.</param>
             <returns>The string value with a leading '$' escaped, if one was present.</returns>
         </member>
+        <member name="T:System.Data.Services.Client.Providers.EdmComplexTypeWithDelayLoadedProperties">
+            <summary>
+            An <see cref="T:Microsoft.Data.Edm.IEdmComplexType"/> implementation that supports delay-loading of properties.
+            </summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Providers.EdmComplexTypeWithDelayLoadedProperties.lockObject">
+            <summary>The lock object for the delayed property loading.</summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Providers.EdmComplexTypeWithDelayLoadedProperties.propertyLoadAction">
+            <summary>An action that is used to create the properties for this type.</summary>
+        </member>
+        <member name="M:System.Data.Services.Client.Providers.EdmComplexTypeWithDelayLoadedProperties.#ctor(System.String,System.String,Microsoft.Data.Edm.IEdmComplexType,System.Boolean,System.Action{System.Data.Services.Client.Providers.EdmComplexTypeWithDelayLoadedProperties})">
+            <summary>
+            Initializes a new instance of the EdmComplexTypeWithDelayLoadedProperties class.
+            </summary>
+            <param name="namespaceName">Namespace the entity belongs to.</param>
+            <param name="name">Name of the entity.</param>
+            <param name="baseType">The base type of this entity type.</param>
+            <param name="isAbstract">Denotes an entity that cannot be instantiated.</param>
+            <param name="propertyLoadAction">An action that is used to create the properties for this type.</param>
+        </member>
+        <member name="M:System.Data.Services.Client.Providers.EdmComplexTypeWithDelayLoadedProperties.EnsurePropertyLoaded">
+            <summary>
+            Ensures that the properties have been loaded and can be used.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Providers.EdmComplexTypeWithDelayLoadedProperties.DeclaredProperties">
+            <summary>
+            Gets the properties declared immediately within this type.
+            </summary>
+        </member>
+        <member name="T:System.Data.Services.Client.Providers.EdmEntityTypeWithDelayLoadedProperties">
+            <summary>
+            An <see cref="T:Microsoft.Data.Edm.IEdmEntityType"/> implementation that supports delay-loading of properties.
+            </summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Providers.EdmEntityTypeWithDelayLoadedProperties.lockObject">
+            <summary>The lock object for the delayed property loading.</summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Providers.EdmEntityTypeWithDelayLoadedProperties.propertyLoadAction">
+            <summary>An action that is used to create the properties for this type.</summary>
+        </member>
+        <member name="M:System.Data.Services.Client.Providers.EdmEntityTypeWithDelayLoadedProperties.#ctor(System.String,System.String,Microsoft.Data.Edm.IEdmEntityType,System.Boolean,System.Boolean,System.Action{System.Data.Services.Client.Providers.EdmEntityTypeWithDelayLoadedProperties})">
+            <summary>
+            Initializes a new instance of the EdmEntityTypeWithDelayLoadedProperties class.
+            </summary>
+            <param name="namespaceName">Namespace the entity belongs to.</param>
+            <param name="name">Name of the entity.</param>
+            <param name="baseType">The base type of this entity type.</param>
+            <param name="isAbstract">Denotes an entity that cannot be instantiated.</param>
+            <param name="isOpen">Denotes if the type is open.</param>
+            <param name="propertyLoadAction">An action that is used to create the properties for this type.</param>
+        </member>
+        <member name="M:System.Data.Services.Client.Providers.EdmEntityTypeWithDelayLoadedProperties.EnsurePropertyLoaded">
+            <summary>
+            Ensures that the properties have been loaded and can be used.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Providers.EdmEntityTypeWithDelayLoadedProperties.DeclaredKey">
+            <summary>
+            Gets or sets the structural properties of the entity type that make up the entity key.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Providers.EdmEntityTypeWithDelayLoadedProperties.DeclaredProperties">
+            <summary>
+            Gets the properties declared immediately within this type.
+            </summary>
+        </member>
         <member name="T:System.Data.Services.Client.KeySerializer">
             <summary>
             Component for serializing entity key values for building identities, edit links, etc.
@@ -1150,6 +1204,9 @@
         <member name="F:System.Data.Services.Client.XmlConstants.HttpAccept">
             <summary>The mime type that client wants the response to be in.</summary>
         </member>
+        <member name="F:System.Data.Services.Client.XmlConstants.HttpAcceptCharset">
+            <summary>The character set the client wants the response to be in.</summary>
+        </member>
         <member name="F:System.Data.Services.Client.XmlConstants.HttpCookie">
             <summary>The name of the Cookie HTTP header</summary>
         </member>
@@ -1446,12 +1503,6 @@
         </member>
         <member name="F:System.Data.Services.Client.XmlConstants.XmlTrueLiteral">
             <summary>'true' literal, as used in XML.</summary>
-        </member>
-        <member name="F:System.Data.Services.Client.XmlConstants.XmlInfinityLiteral">
-            <summary>'INF' literal, as used in XML for infinity.</summary>
-        </member>
-        <member name="F:System.Data.Services.Client.XmlConstants.XmlNaNLiteral">
-            <summary>'NaN' literal, as used in XML for not-a-number values.</summary>
         </member>
         <member name="F:System.Data.Services.Client.XmlConstants.XmlBaseAttributeName">
             <summary>XML attribute value to indicate the base URI for a document or element.</summary>
@@ -2283,74 +2334,6 @@
         <member name="P:System.Data.Services.Client.Serializers.EntityPropertyMappingInfo.IsSyndicationMapping">
             <summary>
             Set to true if this info describes mapping to a syndication item, or false if it describes a custom mapping
-            </summary>
-        </member>
-        <member name="T:System.Data.Services.Client.Providers.MetadataProviderEdmEntityType">
-            <summary>
-            An <see cref="T:Microsoft.Data.Edm.IEdmEntityType"/> implementation that supports delay-loading of properties.
-            </summary>
-        </member>
-        <member name="F:System.Data.Services.Client.Providers.MetadataProviderEdmEntityType.lockObject">
-            <summary>The lock object for the delayed property loading.</summary>
-        </member>
-        <member name="F:System.Data.Services.Client.Providers.MetadataProviderEdmEntityType.propertyLoadAction">
-            <summary>An action that is used to create the properties for this type.</summary>
-        </member>
-        <member name="M:System.Data.Services.Client.Providers.MetadataProviderEdmEntityType.#ctor(System.String,System.String,Microsoft.Data.Edm.IEdmEntityType,System.Boolean,System.Boolean,System.Action{System.Data.Services.Client.Providers.MetadataProviderEdmEntityType})">
-            <summary>
-            Initializes a new instance of the MetadataProviderEdmEntityType class.
-            </summary>
-            <param name="namespaceName">Namespace the entity belongs to.</param>
-            <param name="name">Name of the entity.</param>
-            <param name="baseType">The base type of this entity type.</param>
-            <param name="isAbstract">Denotes an entity that cannot be instantiated.</param>
-            <param name="isOpen">Denotes if the type is open.</param>
-            <param name="propertyLoadAction">An action that is used to create the properties for this type.</param>
-        </member>
-        <member name="M:System.Data.Services.Client.Providers.MetadataProviderEdmEntityType.EnsurePropertyLoaded">
-            <summary>
-            Ensures that the properties have been loaded and can be used.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Providers.MetadataProviderEdmEntityType.DeclaredKey">
-            <summary>
-            Gets or sets the structural properties of the entity type that make up the entity key.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Providers.MetadataProviderEdmEntityType.DeclaredProperties">
-            <summary>
-            Gets the properties declared immediately within this type.
-            </summary>
-        </member>
-        <member name="T:System.Data.Services.Client.Providers.MetadataProviderEdmComplexType">
-            <summary>
-            An <see cref="T:Microsoft.Data.Edm.IEdmComplexType"/> implementation that supports delay-loading of properties.
-            </summary>
-        </member>
-        <member name="F:System.Data.Services.Client.Providers.MetadataProviderEdmComplexType.lockObject">
-            <summary>The lock object for the delayed property loading.</summary>
-        </member>
-        <member name="F:System.Data.Services.Client.Providers.MetadataProviderEdmComplexType.propertyLoadAction">
-            <summary>An action that is used to create the properties for this type.</summary>
-        </member>
-        <member name="M:System.Data.Services.Client.Providers.MetadataProviderEdmComplexType.#ctor(System.String,System.String,Microsoft.Data.Edm.IEdmComplexType,System.Boolean,System.Action{System.Data.Services.Client.Providers.MetadataProviderEdmComplexType})">
-            <summary>
-            Initializes a new instance of the MetadataProviderEdmEntityType class.
-            </summary>
-            <param name="namespaceName">Namespace the entity belongs to.</param>
-            <param name="name">Name of the entity.</param>
-            <param name="baseType">The base type of this entity type.</param>
-            <param name="isAbstract">Denotes an entity that cannot be instantiated.</param>
-            <param name="propertyLoadAction">An action that is used to create the properties for this type.</param>
-        </member>
-        <member name="M:System.Data.Services.Client.Providers.MetadataProviderEdmComplexType.EnsurePropertyLoaded">
-            <summary>
-            Ensures that the properties have been loaded and can be used.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Providers.MetadataProviderEdmComplexType.DeclaredProperties">
-            <summary>
-            Gets the properties declared immediately within this type.
             </summary>
         </member>
         <member name="T:System.Data.Services.Client.DataStringEscapeBuilder">
@@ -3342,7 +3325,7 @@
             <param name="responseInfo">information about the response to be materialized.</param>
             <param name="etag">etag value, if specified in the response header.</param>
         </member>
-        <member name="P:System.Data.Services.Client.BaseSaveResult.IsBatch">
+        <member name="P:System.Data.Services.Client.BaseSaveResult.IsBatchRequest">
             <summary>returns true if its a batch, otherwise returns false.</summary>
         </member>
         <member name="P:System.Data.Services.Client.BaseSaveResult.ResponseStream">
@@ -3539,7 +3522,7 @@
             <param name="contentHeaders">The response headers for the operation response being processed.</param>
             <returns>Returns the correct ChangedEntries index.</returns>
         </member>
-        <member name="P:System.Data.Services.Client.BatchSaveResult.IsBatch">
+        <member name="P:System.Data.Services.Client.BatchSaveResult.IsBatchRequest">
             <summary>returns true since this class handles batch requests.</summary>
         </member>
         <member name="P:System.Data.Services.Client.BatchSaveResult.ResponseStream">
@@ -3579,11 +3562,10 @@
             <param name="headers">The response headers.</param>
             <param name="contentStream">An in-memory copy of the response stream.</param>
         </member>
-        <member name="M:System.Data.Services.Client.BatchSaveResult.CurrentOperationResponse.CreateResponseMessage(System.Data.Services.Client.RequestInfo)">
+        <member name="M:System.Data.Services.Client.BatchSaveResult.CurrentOperationResponse.CreateResponseMessage">
             <summary>
             Creates IODataResponseMessage for the operation response.
             </summary>
-            <param name="requestInfo">RequestInfo instance.</param>
             <returns>
             IODataResponseMessage for the operation response.
             null if the operation response has empty content.
@@ -4081,6 +4063,24 @@
             Or null if it is not possible to determine the ID.
             </returns>
         </member>
+        <member name="M:System.Data.Services.Client.ConventionalODataEntityMetadataBuilder.GetETag">
+            <summary>
+            Gets the ETag of the entity.
+            </summary>
+            <returns>
+            The ETag for the entity.
+            Or null if it is not possible to determine the ETag.
+            </returns>
+        </member>
+        <member name="M:System.Data.Services.Client.ConventionalODataEntityMetadataBuilder.GetReadLink">
+            <summary>
+            Gets the read link of the entity.
+            </summary>
+            <returns>
+            The absolute URI of the read link for the entity.
+            Or null if it is not possible to determine the read link.
+            </returns>
+        </member>
         <member name="T:System.Data.Services.Client.ConventionalODataEntityMetadataBuilder.ConventionalODataUriBuilder">
             <summary>
             Implementation of <see cref="T:System.Data.Services.Client.ODataUriBuilder"/> that uses conventions.
@@ -4183,18 +4183,556 @@
             be read and false if the instance annotation should be skipped.
             </summary>
         </member>
+        <member name="T:System.Data.Services.Client.Materialization.ODataLoadNavigationPropertyMaterializer">
+            <summary>
+            Materializer for LoadProperty API call for navigation properties.
+            </summary>
+        </member>
+        <member name="T:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer">
+            <summary>
+            Materializes feeds and entities from an ODataReader
+            </summary>
+        </member>
+        <member name="T:System.Data.Services.Client.Materialization.ODataEntityMaterializer">
+            <summary>
+            Used to materialize entities from a <see cref="T:Microsoft.Data.OData.ODataEntry"/> objects.
+            </summary>
+        </member>
+        <member name="T:System.Data.Services.Client.Materialization.ODataMaterializer">
+            <summary>
+            Use this class to materialize objects provided from an <see cref="T:Microsoft.Data.OData.ODataMessageReader"/>.
+            </summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Materialization.ODataMaterializer.EmptyLinks">
+            <summary>Empty navigation links collection</summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Materialization.ODataMaterializer.EmptyProperties">
+            <summary>Empty property collection</summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Materialization.ODataMaterializer.nextLinkTable">
+            <summary>Collection->Next Link Table for nested links</summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Materialization.ODataMaterializer.collectionValueMaterializationPolicy">
+            <summary>The collection value materialization policy. </summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Materialization.ODataMaterializer.complexValueMaterializerPolicy">
+            <summary>The complex value materializer policy. </summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Materialization.ODataMaterializer.primitiveValueMaterializationPolicy">
+            <summary> The materialization policy used to materialize primitive values. </summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Materialization.ODataMaterializer.lazyPrimitivePropertyConverter">
+            <summary>The converter to use when assigning values of primitive properties. </summary>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.#ctor(System.Data.Services.Client.Materialization.IODataMaterializerContext,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Data.Services.Client.Materialization.ODataMaterializer"/> class.
+            </summary>
+            <param name="materializerContext">The materializer context.</param>
+            <param name="expectedType">The expected type.</param>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.CreateMaterializerForMessage(Microsoft.Data.OData.IODataResponseMessage,System.Data.Services.Client.ResponseInfo,System.Type,System.Data.Services.Client.QueryComponents,System.Data.Services.Client.ProjectionPlan,Microsoft.Data.OData.ODataPayloadKind)">
+            <summary>
+            Creates an <see cref="T:System.Data.Services.Client.Materialization.ODataMaterializer"/> for a response.
+            </summary>
+            <param name="responseMessage">The response message.</param>
+            <param name="responseInfo">The response context.</param>
+            <param name="materializerType">The type to materialize.</param>
+            <param name="queryComponents">The query components for the request.</param>
+            <param name="plan">The projection plan.</param>
+            <param name="payloadKind">expected payload kind.</param>
+            <returns>A materializer specialized for the given response.</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.Read">
+            <summary>Reads the next value from the input content.</summary>
+            <returns>true if another value is available after reading; false otherwise.</returns>
+            <remarks>
+            After invocation, the currentValue field (and CurrentValue property) will 
+            reflect the value materialized from the parser; possibly null if the
+            result is true (for null values); always null if the result is false.
+            </remarks>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.Dispose">
+            <summary>
+            Disposes the materializer
+            </summary>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.ClearLog">
+            <summary>Clears the materialization log of activity.</summary>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.ApplyLogToContext">
+            <summary>Applies the materialization log to the context.</summary>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.CreateODataMessageReader(Microsoft.Data.OData.IODataResponseMessage,System.Data.Services.Client.ResponseInfo,Microsoft.Data.OData.ODataPayloadKind@)">
+            <summary>
+            Creates an <see cref="T:Microsoft.Data.OData.ODataMessageReader"/> for a given message and context using
+            WCF DS client settings.
+            </summary>
+            <param name="responseMessage">The response message</param>
+            <param name="responseInfo">The response context</param>
+            <param name="payloadKind">Type of the message.</param>
+            <returns>The message reader.</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.VerifyNotDisposed">
+            <summary>
+            Verifies that the object is not disposed.
+            </summary>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.ReadImplementation">
+            <summary>
+            Implementation of <see cref="M:System.Data.Services.Client.Materialization.ODataMaterializer.Read"/>.
+            </summary>
+            <returns>Return value of <see cref="M:System.Data.Services.Client.Materialization.ODataMaterializer.Read"/></returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.OnDispose">
+            <summary>
+            Called when IDisposable.Dispose is called.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.CurrentValue">
+            <summary>Current value being materialized; possibly null.</summary>
+            <remarks>
+            This will typically be an entity if <see cref="P:System.Data.Services.Client.Materialization.ODataMaterializer.CurrentEntry"/>
+            is assigned, but may contain a string for example if a top-level
+            primitive of type string is found.
+            </remarks>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.CurrentFeed">
+            <summary>Feed being materialized; possibly null.</summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.CurrentEntry">
+            <summary>Entry being materialized; possibly null.</summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.NextLinkTable">
+            <summary>Table storing the next links assoicated with the current payload</summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.IsEndOfStream">
+            <summary>Whether we have finished processing the current data stream.</summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.IsCountable">
+            <summary>
+            Returns true if the underlying object used for counting is available
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.CountValue">
+            <summary>
+            The count tag's value, if requested
+            </summary>
+            <returns>The count value returned from the server</returns>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.MaterializeEntryPlan">
+            <summary>Function to materialize an entry and produce a value.</summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.MaterializerContext">
+            <summary>
+            Gets the materializer context
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.IsDisposed">
+            <summary>
+            Returns true if the materializer has been disposed
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.ExpectedType">
+            <summary>
+            Gets the expected type.
+            </summary>
+            <value>
+            The expected type.
+            </value>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.CollectionValueMaterializationPolicy">
+            <summary>
+            Gets the collection value materialization policy.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.ComplexValueMaterializationPolicy">
+            <summary>
+            Gets the complex value materialization policy.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.PrimitivePropertyConverter">
+            <summary>
+            The converter to use when assigning values of primitive properties.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.PrimitiveValueMaterializier">
+            <summary>
+            The policy used to materialize primitive values.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.Format">
+            <summary>
+            The format of the response being materialized.
+            </summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Materialization.ODataEntityMaterializer.currentValue">
+            <summary>The value of the current materialized entity.</summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Materialization.ODataEntityMaterializer.materializeEntryPlan">
+            <summary>The materializer plan.</summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Materialization.ODataEntityMaterializer.entryValueMaterializerPolicy">
+            <summary> The entry value materializer policy. </summary>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.#ctor(System.Data.Services.Client.Materialization.IODataMaterializerContext,System.Data.Services.Client.Materialization.EntityTrackingAdapter,System.Data.Services.Client.QueryComponents,System.Type,System.Data.Services.Client.ProjectionPlan)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Data.Services.Client.Materialization.ODataEntityMaterializer"/> class.
+            </summary>
+            <param name="materializerContext">The materializer context.</param>
+            <param name="entityTrackingAdapter">The entity tracking adapter.</param>
+            <param name="queryComponents">The query components.</param>
+            <param name="expectedType">The expected type.</param>
+            <param name="materializeEntryPlan">The materialize entry plan.</param>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.EnumerateAsElementType``1(System.Collections.IEnumerable)">
+            <summary>Enumerates casting each element to a type.</summary>
+            <typeparam name="T">Element type to enumerate over.</typeparam>
+            <param name="source">Element source.</param>
+            <returns>
+            An IEnumerable&lt;T&gt; that iterates over the specified <paramref name="source"/>.
+            </returns>
+            <remarks>
+            This method should be unnecessary with .NET 4.0 covariance support.
+            </remarks>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.EnumerateAsElementTypeInternal``1(System.Collections.IEnumerable)">
+            <summary>Enumerates casting each element to a type.</summary>
+            <typeparam name="T">Element type to enumerate over.</typeparam>
+            <param name="source">Element source.</param>
+            <returns>
+            An IEnumerable&lt;T&gt; that iterates over the specified <paramref name="source"/>.
+            </returns>
+            <remarks>
+            This method should be unnecessary with .NET 4.0 covariance support.
+            </remarks>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ListAsElementType``2(System.Data.Services.Client.Materialization.ODataEntityMaterializer,System.Collections.Generic.IEnumerable{``0})">
+            <summary>Creates a list to a target element type.</summary>
+            <param name="materializer">Materializer used to flow link tracking.</param>
+            <typeparam name="T">Element type to enumerate over.</typeparam>
+            <typeparam name="TTarget">Element type for list.</typeparam>
+            <param name="source">Element source.</param>
+            <returns>
+            An IEnumerable&lt;T&gt; that iterates over the specified <paramref name="source"/>.
+            </returns>
+            <remarks>
+            This method should be unnecessary with .NET 4.0 covariance support.
+            </remarks>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.CreatePlanForDirectMaterialization(System.Type)">
+            <summary>Creates an entry materialization plan that is payload-driven.</summary>
+            <param name="lastSegmentType">Segment type for the entry to materialize (typically last of URI in query).</param>
+            <returns>A payload-driven materialization plan.</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.CreatePlanForShallowMaterialization(System.Type)">
+            <summary>Creates an entry materialization plan that is payload-driven and does not traverse expanded links.</summary>
+            <param name="lastSegmentType">Segment type for the entry to materialize (typically last of URI in query).</param>
+            <returns>A payload-driven materialization plan.</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ProjectionCheckValueForPathIsNull(System.Data.Services.Client.Materialization.MaterializerEntry,System.Type,System.Data.Services.Client.ProjectionPath)">
+            <summary>Checks whether the entity on the specified <paramref name="path"/> is null.</summary>
+            <param name="entry">Root entry for paths.</param>
+            <param name="expectedType">Expected type for <paramref name="entry"/>.</param>
+            <param name="path">Path to pull value for.</param>
+            <returns>Whether the specified <paramref name="path"/> is null.</returns>
+            <remarks>
+            This method will not instantiate entity types on the path.
+            Note that if the target is a collection, the result is always false,
+            as the model does not allow null feeds (but instead gets an empty
+            collection, possibly with continuation tokens and such).
+            </remarks>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ProjectionSelect(System.Data.Services.Client.Materialization.ODataEntityMaterializer,System.Data.Services.Client.Materialization.MaterializerEntry,System.Type,System.Type,System.Data.Services.Client.ProjectionPath,System.Func{System.Object,System.Object,System.Type,System.Object})">
+            <summary>Provides support for Select invocations for projections.</summary>
+            <param name="materializer">Materializer under which projection is taking place.</param>
+            <param name="entry">Root entry for paths.</param>
+            <param name="expectedType">Expected type for <paramref name="entry"/>.</param>
+            <param name="resultType">Expected result type.</param>
+            <param name="path">Path to traverse.</param>
+            <param name="selector">Selector callback.</param>
+            <returns>An enumerable with the select results.</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ProjectionGetEntry(System.Data.Services.Client.Materialization.MaterializerEntry,System.String)">
+            <summary>Provides support for getting payload entries during projections.</summary>
+            <param name="entry">Entry to get sub-entry from.</param>
+            <param name="name">Name of sub-entry.</param>
+            <returns>The sub-entry (never null).</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ProjectionInitializeEntity(System.Data.Services.Client.Materialization.ODataEntityMaterializer,System.Data.Services.Client.Materialization.MaterializerEntry,System.Type,System.Type,System.String[],System.Func{System.Object,System.Object,System.Type,System.Object}[])">
+            <summary>Initializes a projection-driven entry (with a specific type and specific properties).</summary>
+            <param name="materializer">Materializer under which projection is taking place.</param>
+            <param name="entry">Root entry for paths.</param>
+            <param name="expectedType">Expected type for <paramref name="entry"/>.</param>
+            <param name="resultType">Expected result type.</param>
+            <param name="properties">Properties to materialize.</param>
+            <param name="propertyValues">Functions to get values for functions.</param>
+            <returns>The initialized entry.</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ProjectionEnsureEntryAvailableOfType(System.Data.Services.Client.Materialization.ODataEntityMaterializer,System.Data.Services.Client.Materialization.MaterializerEntry,System.Type)">
+            <summary>
+            Ensures that an entry of <paramref name="requiredType"/> is 
+            available on the specified <paramref name="entry"/>.
+            </summary>
+            <param name="materializer">Materilizer used for logging. </param>
+            <param name="entry">Entry to ensure.</param>
+            <param name="requiredType">Required type.</param>
+            <remarks>
+            As the 'Projection' suffix suggests, this method should only
+            be used during projection operations; it purposefully avoid
+            "source tree" type usage and POST reply entry resolution.
+            </remarks>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.DirectMaterializePlan(System.Data.Services.Client.Materialization.ODataEntityMaterializer,System.Data.Services.Client.Materialization.MaterializerEntry,System.Type)">
+            <summary>Materializes an entry with no special selection.</summary>
+            <param name="materializer">Materializer under which materialization should take place.</param>
+            <param name="entry">Entry with object to materialize.</param>
+            <param name="expectedEntryType">Expected type for the entry.</param>
+            <returns>The materialized instance.</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ShallowMaterializePlan(System.Data.Services.Client.Materialization.ODataEntityMaterializer,System.Data.Services.Client.Materialization.MaterializerEntry,System.Type)">
+            <summary>Materializes an entry without including in-lined expanded links.</summary>
+            <param name="materializer">Materializer under which materialization should take place.</param>
+            <param name="entry">Entry with object to materialize.</param>
+            <param name="expectedEntryType">Expected type for the entry.</param>
+            <returns>The materialized instance.</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ProjectionValueForPath(System.Data.Services.Client.Materialization.MaterializerEntry,System.Type,System.Data.Services.Client.ProjectionPath)">
+            <summary>Projects a simple value from the specified <paramref name="path"/>.</summary>
+            <param name="entry">Root entry for paths.</param>
+            <param name="expectedType">Expected type for <paramref name="entry"/>.</param>
+            <param name="path">Path to pull value for.</param>
+            <returns>The value for the specified <paramref name="path"/>.</returns>
+            <remarks>
+            This method will not instantiate entity types, except to satisfy requests
+            for payload-driven feeds or leaf entities.
+            </remarks>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ClearLog">
+            <summary>Clears the materialization log of activity.</summary>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ApplyLogToContext">
+            <summary>Applies the materialization log to the context.</summary>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.PropagateContinuation``1(System.Collections.Generic.IEnumerable{``0},System.Data.Services.Client.DataServiceCollection{``0})">
+            <summary>Helper method for constructor of DataServiceCollection.</summary>
+            <typeparam name="T">Element type for collection.</typeparam>
+            <param name="from">The enumerable which has the continuation on it.</param>
+            <param name="to">The DataServiceCollection to apply the continuation to.</param>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ReadImplementation">
+            <summary>
+            Implementation of Read/>.
+            </summary>
+            <returns>
+            Return value of Read/>
+            </returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ReadNextFeedOrEntry">
+            <summary>
+            Reads the next feed or entry.
+            </summary>
+            <returns>True if an entry was read, otherwise false</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.CheckEntryToAccessNotNull(System.Data.Services.Client.Materialization.MaterializerEntry,System.String)">
+            <summary>
+            Checks that the specified <paramref name="entry"/> isn't null.
+            </summary>
+            <param name="entry">Entry to check.</param>
+            <param name="name">Name of entry being accessed.</param>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.CreatePlan(System.Data.Services.Client.QueryComponents)">
+            <summary>Creates an entry materialization plan for a given projection.</summary>
+            <param name="queryComponents">Query components for plan to materialize.</param>
+            <returns>A materialization plan.</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.MaterializeToList(System.Data.Services.Client.Materialization.ODataEntityMaterializer,System.Collections.IEnumerable,System.Type,System.Collections.Generic.IEnumerable{Microsoft.Data.OData.ODataEntry})">
+            <summary>Materializes the result of a projection into a list.</summary>
+            <param name="materializer">Materializer to use for the operation.</param>
+            <param name="list">Target list.</param>
+            <param name="nestedExpectedType">Expected type for nested object.</param>
+            <param name="entries">Entries to materialize from.</param>
+            <remarks>
+            This method supports projections and as such does shallow payload-driven
+            materialization of entities.
+            </remarks>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.GetPropertyOrThrow(System.Collections.Generic.IEnumerable{Microsoft.Data.OData.ODataNavigationLink},System.String)">
+            <summary>Gets a property from the specified <paramref name="links"/> list, throwing if not found.</summary>
+            <param name="links">List to get value from.</param>
+            <param name="propertyName">Property name to look up.</param>
+            <returns>The specified property (never null).</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.MergeLists(System.Data.Services.Client.Materialization.MaterializerEntry,System.Data.Services.Client.Metadata.ClientPropertyAnnotation,System.Collections.IEnumerable,System.Uri,System.Data.Services.Client.ProjectionPlan)">
+            <summary>Merges a list into the property of a given <paramref name="entry"/>.</summary>
+            <param name="entry">Entry to merge into.</param>
+            <param name="property">Property on entry to merge into.</param>
+            <param name="list">List of materialized values.</param>
+            <param name="nextLink">Next link for feed from which the materialized values come from.</param>
+            <param name="plan">Projection plan for the list.</param>
+            <remarks>
+            This method will handle entries that shouldn't be updated correctly.
+            </remarks>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataEntityMaterializer.EntityTrackingAdapter">
+            <summary>
+            Gets the Entity Materializer Context
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataEntityMaterializer.TargetInstance">
+            <summary>
+            Target instance that the materializer expects to update.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataEntityMaterializer.CurrentValue">
+            <summary>
+            Current value being materialized; possibly null.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataEntityMaterializer.MaterializeEntryPlan">
+            <summary>
+            Function to materialize an entry and produce a value.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataEntityMaterializer.EntryValueMaterializationPolicy">
+            <summary>
+            Gets the entry value materialization policy.
+            </summary>
+            <value>
+            The entry value materialization policy.
+            </value>
+        </member>
+        <member name="F:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.feedEntryAdapter">
+            <summary>The enty or feed reader.</summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.messageReader">
+            <summary>The message reader.</summary>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.#ctor(Microsoft.Data.OData.ODataMessageReader,System.Data.Services.Client.Materialization.ODataReaderWrapper,System.Data.Services.Client.Materialization.IODataMaterializerContext,System.Data.Services.Client.Materialization.EntityTrackingAdapter,System.Data.Services.Client.QueryComponents,System.Type,System.Data.Services.Client.ProjectionPlan)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer"/> class.
+            </summary>
+            <param name="odataMessageReader">The odata message reader.</param>
+            <param name="reader">The reader.</param>
+            <param name="materializerContext">The materializer context.</param>
+            <param name="entityTrackingAdapter">The entity tracking adapter.</param>
+            <param name="queryComponents">The query components.</param>
+            <param name="expectedType">The expected type.</param>
+            <param name="materializeEntryPlan">The materialize entry plan.</param>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.ParseSingleEntityPayload(Microsoft.Data.OData.IODataResponseMessage,System.Data.Services.Client.ResponseInfo,System.Type)">
+            <summary>
+            This method is for parsing CUD operation payloads which should contain
+            1 a single entry
+            2 An Error
+            </summary>
+            <param name="message">the message for the payload</param>
+            <param name="responseInfo">The current ResponseInfo object</param>
+            <param name="expectedType">The expected type</param>
+            <returns>the MaterializerEntry that was read</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.OnDispose">
+            <summary>
+            Called when IDisposable.Dispose is called.
+            </summary>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.ReadNextFeedOrEntry">
+            <summary>
+            Reads the next feed or entry.
+            </summary>
+            <returns>
+            True if an entry was read, otherwise false
+            </returns>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.CurrentFeed">
+            <summary>
+            Feed being materialized; possibly null.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.CurrentEntry">
+            <summary>
+            Entry being materialized; possibly null.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.IsEndOfStream">
+            <summary>
+            Whether we have finished processing the current data stream.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.CountValue">
+            <summary>
+            The count tag's value, if requested
+            </summary>
+            <returns>The count value returned from the server</returns>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.IsCountable">
+            <summary>
+            Returns true if the underlying object used for counting is available
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.IsDisposed">
+            <summary>
+            Returns true if the materializer has been disposed
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.Format">
+            <summary>
+            The format of the response being materialized.
+            </summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Materialization.ODataLoadNavigationPropertyMaterializer.responseInfo">
+            <summary>
+            Response Info object.
+            </summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Materialization.ODataLoadNavigationPropertyMaterializer.items">
+            <summary>
+            Items that have been read from the feed or entry.
+            </summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Materialization.ODataLoadNavigationPropertyMaterializer.iteration">
+            <summary>
+            Iteration of the entity collection reader.
+            </summary>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataLoadNavigationPropertyMaterializer.#ctor(Microsoft.Data.OData.ODataMessageReader,System.Data.Services.Client.Materialization.ODataReaderWrapper,System.Data.Services.Client.Materialization.IODataMaterializerContext,System.Data.Services.Client.Materialization.EntityTrackingAdapter,System.Data.Services.Client.QueryComponents,System.Type,System.Data.Services.Client.ProjectionPlan,System.Data.Services.Client.LoadPropertyResponseInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Data.Services.Client.Materialization.ODataLoadNavigationPropertyMaterializer"/> class.
+            </summary>
+            <param name="odataMessageReader">The odata message reader.</param>
+            <param name="reader">The reader.</param>
+            <param name="materializerContext">The materializer context.</param>
+            <param name="entityTrackingAdapter">The entity tracking adapter.</param>
+            <param name="queryComponents">The query components.</param>
+            <param name="expectedType">The expected type.</param>
+            <param name="materializeEntryPlan">The materialize entry plan.</param>
+            <param name="responseInfo">LoadProperty Response Info object.</param>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.ODataLoadNavigationPropertyMaterializer.ReadImplementation">
+            <summary>
+            Implementation of Read/>.
+            </summary>
+            <returns>
+            Return value of Read/>
+            </returns>
+        </member>
         <member name="T:System.Data.Services.Client.DataServiceClientRequestMessageArgs">
             <summary>
             Arguments for creating an instance of DataServiceClientRequestMessage.
             </summary>
         </member>
-        <member name="M:System.Data.Services.Client.DataServiceClientRequestMessageArgs.#ctor(System.Data.Services.Client.BuildingRequestEventArgs,System.Boolean,System.Boolean)">
+        <member name="F:System.Data.Services.Client.DataServiceClientRequestMessageArgs.actualMethod">
+            <summary> The actual method. </summary>
+        </member>
+        <member name="M:System.Data.Services.Client.DataServiceClientRequestMessageArgs.#ctor(System.String,System.Uri,System.Boolean,System.Boolean,System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
-            Initializes a new instance of the <see cref="T:System.Data.Services.Client.BuildingRequestEventArgs"/> class.
+            Initializes a new instance of the <see cref="T:System.Data.Services.Client.DataServiceClientRequestMessageArgs"/> class.
             </summary>
-            <param name="requestMessageArgs">RequestMessageArgs instance.</param>
-            <param name="usePostTunneling">True if the request message must use POST verb for the request and pass the actual verb in X-HTTP-Method header, otherwise false.</param>
+            <param name="method">Method of the request.</param>
+            <param name="requestUri">The Request Uri.</param>
             <param name="useDefaultCredentials">True if the default credentials need to be sent with the request. Otherwise false.</param>
+            <param name="usePostTunneling">True if the request message must use POST verb for the request and pass the actual verb in X-HTTP-Method header, otherwise false.</param>
+            <param name="headers">The set of headers for the request.</param>
         </member>
         <member name="P:System.Data.Services.Client.DataServiceClientRequestMessageArgs.Method">
             <summary>
@@ -4209,6 +4747,16 @@
         <member name="P:System.Data.Services.Client.DataServiceClientRequestMessageArgs.UsePostTunneling">
             <summary>
             Returns whether the request message should use Post-Tunneling.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.DataServiceClientRequestMessageArgs.Headers">
+            <summary>
+            Gets the headers.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.DataServiceClientRequestMessageArgs.ActualMethod">
+            <summary>
+            Gets the actual method. Indicates correct method to use in the post tunneling case.
             </summary>
         </member>
         <member name="T:System.Data.Services.Client.HttpStack">
@@ -4600,7 +5148,7 @@
             <param name="includeLinks">Whether links that are expanded should be materialized.</param>
             <remarks>This is a payload-driven materialization process.</remarks>
         </member>
-        <member name="M:System.Data.Services.Client.Materialization.EntryValueMaterializationPolicy.ApplyItemsToCollection(System.Data.Services.Client.Materialization.MaterializerEntry,System.Data.Services.Client.Metadata.ClientPropertyAnnotation,System.Collections.IEnumerable,System.Uri,System.Data.Services.Client.ProjectionPlan)">
+        <member name="M:System.Data.Services.Client.Materialization.EntryValueMaterializationPolicy.ApplyItemsToCollection(System.Data.Services.Client.Materialization.MaterializerEntry,System.Data.Services.Client.Metadata.ClientPropertyAnnotation,System.Collections.IEnumerable,System.Uri,System.Data.Services.Client.ProjectionPlan,System.Boolean)">
             <summary>
             Applies the values of the <paramref name="items"/> enumeration to the
             <paramref name="property"/> of the specified <paramref name="entry"/>.
@@ -4610,6 +5158,7 @@
             <param name="items">Values to apply onto the collection.</param>
             <param name="nextLink">Next link for collection continuation.</param>
             <param name="continuationPlan">Projection plan for collection continuation.</param>
+            <param name="isContinuation">Whether this is a continuation request.</param>
         </member>
         <member name="M:System.Data.Services.Client.Materialization.EntryValueMaterializationPolicy.FoundNextLinkForCollection(System.Collections.IEnumerable,System.Uri,System.Data.Services.Client.ProjectionPlan)">
             <summary>Records the fact that a rel='next' link was found for the specified <paramref name="collection"/>.</summary>
@@ -4629,6 +5178,13 @@
             After invocation, entry.ResolvedObject is exactly of type <paramref name="type"/>.
             </remarks>
         </member>
+        <member name="M:System.Data.Services.Client.Materialization.EntryValueMaterializationPolicy.ValidateCollectionElementTypeIsItemType(System.Type,System.Type)">
+            <summary>
+            Matches the given item type with the corresponding collection element type.
+            </summary>
+            <param name="itemType">Item type.</param>
+            <param name="collectionElementType">Collection element type.</param>
+        </member>
         <member name="M:System.Data.Services.Client.Materialization.EntryValueMaterializationPolicy.ApplyLinkProperties(System.Data.Services.Client.Metadata.ClientTypeAnnotation,System.Data.Services.Client.Materialization.MaterializerEntry)">
             <summary>
             Materializes the link properties if any with the url in the response payload
@@ -4636,13 +5192,24 @@
             <param name="actualType">Actual client type that is getting materialized.</param>
             <param name="entry">MaterializerEntry instance containing all the links that came in the response.</param>
         </member>
-        <member name="M:System.Data.Services.Client.Materialization.EntryValueMaterializationPolicy.GetOrCreateCollectionProperty(System.Object,System.Data.Services.Client.Metadata.ClientPropertyAnnotation,System.Type)">
+        <member name="M:System.Data.Services.Client.Materialization.EntryValueMaterializationPolicy.PopulateCollectionProperty(System.Data.Services.Client.Materialization.MaterializerEntry,System.Data.Services.Client.Metadata.ClientPropertyAnnotation,System.Collections.Generic.IEnumerable{System.Object},System.Uri,System.Data.Services.Client.ProjectionPlan)">
+            <summary>
+            Populates the collection property on the entry's resolved object with the given items enumerator.
+            </summary>
+            <param name="entry">Entry with collection to be modified.</param>
+            <param name="property">Collection property on the entry.</param>
+            <param name="items">Values to apply onto the collection.</param>
+            <param name="nextLink">Next link for collection continuation.</param>
+            <param name="continuationPlan">Projection plan for collection continuation.</param>
+            <returns>Collection instance that was populated.</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.EntryValueMaterializationPolicy.GetOrCreateCollectionProperty(System.Object,System.Data.Services.Client.Metadata.ClientPropertyAnnotation,System.Boolean)">
             <summary>
             Gets or creates a collection property on the specified <paramref name="instance"/>.
             </summary>
             <param name="instance">Instance on which to get/create the collection.</param>
             <param name="property">Collection property on the <paramref name="instance"/>.</param>
-            <param name="collectionType">Type to use as a collection, possibly null.</param>
+            <param name="forLoadProperty">Is this collection being created for LoadProperty scenario.</param>
             <returns>
             The collection corresponding to the specified <paramref name="property"/>;
             never null.
@@ -4865,17 +5432,19 @@
             Gets the entity.
             </summary>
         </member>
-        <member name="T:System.Data.Services.Client.DataServiceClientHttpRequestMessage">
-            <summary>
-            This is a temporary class - ideally HttpWebRequestMessage should derive from
-            DataServiceClientRequestMessage. But until the complete refactoring is done,
-            we cannot do that since we will need to make the base class public too.
-            </summary>
-        </member>
         <member name="T:System.Data.Services.Client.DataServiceClientRequestMessage">
             <summary>
             This class represents the contract WCF Data Services client with the request message.
             </summary>
+        </member>
+        <member name="F:System.Data.Services.Client.DataServiceClientRequestMessage.actualHttpMethod">
+            <summary>Http method.</summary>
+        </member>
+        <member name="M:System.Data.Services.Client.DataServiceClientRequestMessage.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Data.Services.Client.DataServiceClientRequestMessage"/> class.
+            </summary>
+            <param name="actualMethod">The actual method.</param>
         </member>
         <member name="M:System.Data.Services.Client.DataServiceClientRequestMessage.GetHeader(System.String)">
             <summary>
@@ -4969,127 +5538,9 @@
              Internet resource. 
             </summary>
         </member>
-        <member name="F:System.Data.Services.Client.DataServiceClientHttpRequestMessage.httpRequestMessage">
+        <member name="P:System.Data.Services.Client.DataServiceClientRequestMessage.ActualMethod">
             <summary>
-            The HttpWebRequestMessage instance that this class is wrapping.
-            </summary>
-        </member>
-        <member name="M:System.Data.Services.Client.DataServiceClientHttpRequestMessage.#ctor(System.Data.Services.Client.DataServiceClientRequestMessageArgs,System.Data.Services.Client.RequestInfo)">
-            <summary>
-            Creates a new instance of HttpWebRequestMessage.
-            </summary>
-            <param name="args">Arguments for creating the request message.</param>
-            <param name="requestInfo">Request Info.</param>
-        </member>
-        <member name="M:System.Data.Services.Client.DataServiceClientHttpRequestMessage.GetHeader(System.String)">
-            <summary>
-            Returns the value of the header with the given name.
-            </summary>
-            <param name="headerName">Name of the header.</param>
-            <returns>Returns the value of the header with the given name.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.DataServiceClientHttpRequestMessage.SetHeader(System.String,System.String)">
-            <summary>
-            Sets the value of the header with the given name.
-            </summary>
-            <param name="headerName">Name of the header.</param>
-            <param name="headerValue">Value of the header.</param>
-        </member>
-        <member name="M:System.Data.Services.Client.DataServiceClientHttpRequestMessage.GetStream">
-            <summary>
-            Gets the stream to be used to write the request payload.
-            </summary>
-            <returns>Stream to which the request payload needs to be written.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.DataServiceClientHttpRequestMessage.Abort">
-            <summary>
-            Abort the current request.
-            </summary>
-        </member>
-        <member name="M:System.Data.Services.Client.DataServiceClientHttpRequestMessage.BeginGetRequestStream(System.AsyncCallback,System.Object)">
-            <summary>
-            Begins an asynchronous request for a System.IO.Stream object to use to write data.
-            </summary>
-            <param name="callback">The System.AsyncCallback delegate.</param>
-            <param name="state">The state object for this request.</param>
-            <returns>An System.IAsyncResult that references the asynchronous request.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.DataServiceClientHttpRequestMessage.EndGetRequestStream(System.IAsyncResult)">
-            <summary>
-            Ends an asynchronous request for a System.IO.Stream object to use to write data.
-            </summary>
-            <param name="asyncResult">The pending request for a stream.</param>
-            <returns>A System.IO.Stream to use to write request data.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.DataServiceClientHttpRequestMessage.BeginGetResponse(System.AsyncCallback,System.Object)">
-            <summary>
-             Begins an asynchronous request to an Internet resource.
-            </summary>
-            <param name="callback">The System.AsyncCallback delegate.</param>
-            <param name="state">The state object for this request.</param>
-            <returns>An System.IAsyncResult that references the asynchronous request for a response.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.DataServiceClientHttpRequestMessage.EndGetResponse(System.IAsyncResult)">
-            <summary>
-            Ends an asynchronous request to an Internet resource.
-            </summary>
-            <param name="asyncResult">The pending request for a response.</param>
-            <returns>A System.Net.WebResponse that contains the response from the Internet resource.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.DataServiceClientHttpRequestMessage.GetResponse">
-            <summary>
-            Returns a response from an Internet resource.
-            </summary>
-            <returns>A System.Net.WebResponse that contains the response from the Internet resource.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.DataServiceClientHttpRequestMessage.AddHeadersToReset(System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-            Add the list of header names to the list of headers whose values need to be reset after firing sendingrequest event.
-            </summary>
-            <param name="headerNames">List of header names.</param>
-        </member>
-        <member name="M:System.Data.Services.Client.DataServiceClientHttpRequestMessage.FireSendingRequest2(System.Data.Services.Client.RequestInfo,System.Data.Services.Client.Descriptor,System.Boolean)">
-            <summary>
-            Fires the SendingRequest2 event.
-            </summary>
-            <param name="requestInfo">RequestInfo instance.</param>
-            <param name="descriptor">Descriptor describing the request.</param>
-            <param name="isBatchPart">true if this request is inside batch otherwise false.</param>
-        </member>
-        <member name="P:System.Data.Services.Client.DataServiceClientHttpRequestMessage.Headers">
-            <summary>
-            Returns the collection of request headers.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.DataServiceClientHttpRequestMessage.Url">
-            <summary>
-            Returns the request url.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.DataServiceClientHttpRequestMessage.Method">
-            <summary>
-            Returns the method for this request.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.DataServiceClientHttpRequestMessage.Credentials">
-            <summary>
-            Gets or set the credentials for this request.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.DataServiceClientHttpRequestMessage.Timeout">
-            <summary>
-            Gets or sets the timeout (in seconds) for this request.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.DataServiceClientHttpRequestMessage.SendChunked">
-            <summary>
-            Gets or sets a value that indicates whether to send data in segments to the
-             Internet resource. 
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.DataServiceClientHttpRequestMessage.HttpRequest">
-            <summary>
-            Returns the underlying HttpWebRequest
+            Gets or the actual method. In post tunneling situations method will be POST instead of the specified verb method.
             </summary>
         </member>
         <member name="T:System.Data.Services.Client.WritingEntityReferenceLinkArgs">
@@ -5202,6 +5653,9 @@
         <member name="F:System.Data.Services.Client.DataServiceClientRequestPipelineConfiguration.messageWriterSettingsConfigurationActions">
             <summary> The message writer setting configurations. </summary>
         </member>
+        <member name="F:System.Data.Services.Client.DataServiceClientRequestPipelineConfiguration.onmessageCreating">
+            <summary> The delegate that represents how a message is created.</summary>
+        </member>
         <member name="M:System.Data.Services.Client.DataServiceClientRequestPipelineConfiguration.#ctor">
             <summary>
             Creates a request pipeline configuration class
@@ -5297,6 +5751,16 @@
             <summary>
             Gets the request message to be used for sending the request. By providing a custom message, users
             can replace the transport layer.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.DataServiceClientRequestPipelineConfiguration.HasOnMessageCreating">
+            <summary>
+            Determines if OnMessageCreating is being used or not.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.DataServiceClientRequestPipelineConfiguration.ContextUsingSendingRequest">
+            <summary>
+            Gets or sets the a value indicating whether the context is using the sending request event or not.
             </summary>
         </member>
         <member name="T:System.Data.Services.Client.ReadingNavigationLinkArgs">
@@ -6823,6 +7287,12 @@
         <member name="M:System.Data.Services.Client.QueryResult.CompletedRequest">
             <summary>cleanup work to do once the request has completed</summary>
         </member>
+        <member name="M:System.Data.Services.Client.QueryResult.CreateResponseInfo">
+            <summary>
+            Create the ResponseInfo.
+            </summary>
+            <returns>ResponseInfo object.</returns>
+        </member>
         <member name="M:System.Data.Services.Client.QueryResult.GetAsyncResponseStreamCopy">
             <summary>get stream which of copy buffer (via response stream) will be copied into</summary>
             <returns>writtable stream, happens before GetAsyncResponseStreamCopyBuffer</returns>
@@ -6888,7 +7358,7 @@
         <member name="F:System.Data.Services.Client.LoadPropertyResult.propertyName">
             <summary>name of the property on the entity that is being loaded</summary>
         </member>
-        <member name="M:System.Data.Services.Client.LoadPropertyResult.#ctor(System.Object,System.String,System.Data.Services.Client.DataServiceContext,System.Data.Services.Client.ODataRequestMessageWrapper,System.AsyncCallback,System.Object,System.Data.Services.Client.DataServiceRequest,System.Data.Services.Client.ProjectionPlan)">
+        <member name="M:System.Data.Services.Client.LoadPropertyResult.#ctor(System.Object,System.String,System.Data.Services.Client.DataServiceContext,System.Data.Services.Client.ODataRequestMessageWrapper,System.AsyncCallback,System.Object,System.Data.Services.Client.DataServiceRequest,System.Data.Services.Client.ProjectionPlan,System.Boolean)">
             <summary>constructor</summary>
             <param name="entity">entity</param>
             <param name="propertyName">name of collection or reference property to load</param>
@@ -6898,12 +7368,19 @@
             <param name="state">user state</param>
             <param name="dataServiceRequest">request object.</param>
             <param name="plan">Projection plan for materialization; possibly null.</param>
+            <param name="isContinuation">Whether this request is a continuation request.</param>
         </member>
         <member name="M:System.Data.Services.Client.LoadPropertyResult.LoadProperty">
             <summary>
             loading a property from a response
             </summary>
             <returns>QueryOperationResponse instance containing information about the response.</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.LoadPropertyResult.CreateResponseInfo">
+            <summary>
+            Creates the ResponseInfo object.
+            </summary>
+            <returns>ResponseInfo object.</returns>
         </member>
         <member name="M:System.Data.Services.Client.LoadPropertyResult.ReadByteArrayWithContentLength(System.IO.Stream,System.Int32)">
             <summary>
@@ -6918,25 +7395,12 @@
             <param name="responseStream">Response stream.</param>
             <returns>byte array containing read data.</returns>
         </member>
-        <member name="M:System.Data.Services.Client.LoadPropertyResult.ReadPropertyFromAtom(System.Data.Services.Client.EntityDescriptor,System.Data.Services.Client.Metadata.ClientPropertyAnnotation)">
+        <member name="M:System.Data.Services.Client.LoadPropertyResult.ReadPropertyFromAtom(System.Data.Services.Client.Metadata.ClientPropertyAnnotation)">
             <summary>
             Load property data from an ATOM response
             </summary>
-            <param name="box">Box pointing to the entity to load this to</param>
             <param name="property">The property being loaded</param>
             <returns>property values as IEnumerable.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.LoadPropertyResult.GetCollectionInstance(System.Data.Services.Client.Metadata.ClientPropertyAnnotation,System.Boolean@)">
-            <summary>
-            Gets or creates collection instance for storing related entities.
-            </summary>
-            <param name="property">Property representing 1..* navigation property (i.e. navigation to collection of entities).</param>
-            <param name="instanceCreated">Whether the returned instance had to be created.</param>
-            <returns>Collection instance for storing related entities. Never null.</returns>
-            <remarks>
-            The returned instance will be of DataServiceCollection&lt;T&gt; type where T is a type of related entities. If ObservableCollection&lt;T&gt; 
-            is not available List&lt;T&gt; will be returned.
-            </remarks>
         </member>
         <member name="M:System.Data.Services.Client.LoadPropertyResult.ReadPropertyFromRawData(System.Data.Services.Client.Metadata.ClientPropertyAnnotation)">
             <summary>
@@ -6953,174 +7417,6 @@
         <member name="T:System.Data.Services.Client.Materialization.ODataMessageReaderMaterializer">
             <summary>
             Used to materialize a value from an <see cref="T:Microsoft.Data.OData.ODataMessageReader"/>.
-            </summary>
-        </member>
-        <member name="T:System.Data.Services.Client.Materialization.ODataMaterializer">
-            <summary>
-            Use this class to materialize objects provided from an <see cref="T:Microsoft.Data.OData.ODataMessageReader"/>.
-            </summary>
-        </member>
-        <member name="F:System.Data.Services.Client.Materialization.ODataMaterializer.EmptyLinks">
-            <summary>Empty navigation links collection</summary>
-        </member>
-        <member name="F:System.Data.Services.Client.Materialization.ODataMaterializer.EmptyProperties">
-            <summary>Empty property collection</summary>
-        </member>
-        <member name="F:System.Data.Services.Client.Materialization.ODataMaterializer.nextLinkTable">
-            <summary>Collection->Next Link Table for nested links</summary>
-        </member>
-        <member name="F:System.Data.Services.Client.Materialization.ODataMaterializer.collectionValueMaterializationPolicy">
-            <summary>The collection value materialization policy. </summary>
-        </member>
-        <member name="F:System.Data.Services.Client.Materialization.ODataMaterializer.complexValueMaterializerPolicy">
-            <summary>The complex value materializer policy. </summary>
-        </member>
-        <member name="F:System.Data.Services.Client.Materialization.ODataMaterializer.primitiveValueMaterializationPolicy">
-            <summary> The materialization policy used to materialize primitive values. </summary>
-        </member>
-        <member name="F:System.Data.Services.Client.Materialization.ODataMaterializer.lazyPrimitivePropertyConverter">
-            <summary>The converter to use when assigning values of primitive properties. </summary>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.#ctor(System.Data.Services.Client.Materialization.IODataMaterializerContext,System.Type)">
-            <summary>
-            Initializes a new instance of the <see cref="T:System.Data.Services.Client.Materialization.ODataMaterializer"/> class.
-            </summary>
-            <param name="materializerContext">The materializer context.</param>
-            <param name="expectedType">The expected type.</param>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.CreateMaterializerForMessage(Microsoft.Data.OData.IODataResponseMessage,System.Data.Services.Client.ResponseInfo,System.Type,System.Data.Services.Client.QueryComponents,System.Data.Services.Client.ProjectionPlan,Microsoft.Data.OData.ODataPayloadKind)">
-            <summary>
-            Creates an <see cref="T:System.Data.Services.Client.Materialization.ODataMaterializer"/> for a response.
-            </summary>
-            <param name="responseMessage">The response message.</param>
-            <param name="responseInfo">The response context.</param>
-            <param name="materializerType">The type to materialize.</param>
-            <param name="queryComponents">The query components for the request.</param>
-            <param name="plan">The projection plan.</param>
-            <param name="payloadKind">expected payload kind.</param>
-            <returns>A materializer specialized for the given response.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.Read">
-            <summary>Reads the next value from the input content.</summary>
-            <returns>true if another value is available after reading; false otherwise.</returns>
-            <remarks>
-            After invocation, the currentValue field (and CurrentValue property) will 
-            reflect the value materialized from the parser; possibly null if the
-            result is true (for null values); always null if the result is false.
-            </remarks>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.Dispose">
-            <summary>
-            Disposes the materializer
-            </summary>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.ClearLog">
-            <summary>Clears the materialization log of activity.</summary>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.ApplyLogToContext">
-            <summary>Applies the materialization log to the context.</summary>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.CreateODataMessageReader(Microsoft.Data.OData.IODataResponseMessage,System.Data.Services.Client.ResponseInfo,Microsoft.Data.OData.ODataPayloadKind@)">
-            <summary>
-            Creates an <see cref="T:Microsoft.Data.OData.ODataMessageReader"/> for a given message and context using
-            WCF DS client settings.
-            </summary>
-            <param name="responseMessage">The response message</param>
-            <param name="responseInfo">The response context</param>
-            <param name="payloadKind">Type of the message.</param>
-            <returns>The message reader.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.VerifyNotDisposed">
-            <summary>
-            Verifies that the object is not disposed.
-            </summary>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.ReadImplementation">
-            <summary>
-            Implementation of <see cref="M:System.Data.Services.Client.Materialization.ODataMaterializer.Read"/>.
-            </summary>
-            <returns>Return value of <see cref="M:System.Data.Services.Client.Materialization.ODataMaterializer.Read"/></returns>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataMaterializer.OnDispose">
-            <summary>
-            Called when IDisposable.Dispose is called.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.CurrentValue">
-            <summary>Current value being materialized; possibly null.</summary>
-            <remarks>
-            This will typically be an entity if <see cref="P:System.Data.Services.Client.Materialization.ODataMaterializer.CurrentEntry"/>
-            is assigned, but may contain a string for example if a top-level
-            primitive of type string is found.
-            </remarks>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.CurrentFeed">
-            <summary>Feed being materialized; possibly null.</summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.CurrentEntry">
-            <summary>Entry being materialized; possibly null.</summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.NextLinkTable">
-            <summary>Table storing the next links assoicated with the current payload</summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.IsEndOfStream">
-            <summary>Whether we have finished processing the current data stream.</summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.IsCountable">
-            <summary>
-            Returns true if the underlying object used for counting is available
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.CountValue">
-            <summary>
-            The count tag's value, if requested
-            </summary>
-            <returns>The count value returned from the server</returns>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.MaterializeEntryPlan">
-            <summary>Function to materialize an entry and produce a value.</summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.MaterializerContext">
-            <summary>
-            Gets the materializer context
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.IsDisposed">
-            <summary>
-            Returns true if the materializer has been disposed
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.ExpectedType">
-            <summary>
-            Gets the expected type.
-            </summary>
-            <value>
-            The expected type.
-            </value>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.CollectionValueMaterializationPolicy">
-            <summary>
-            Gets the collection value materialization policy.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.ComplexValueMaterializationPolicy">
-            <summary>
-            Gets the complex value materialization policy.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.PrimitivePropertyConverter">
-            <summary>
-            The converter to use when assigning values of primitive properties.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.PrimitiveValueMaterializier">
-            <summary>
-            The policy used to materialize primitive values.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataMaterializer.Format">
-            <summary>
-            The format of the response being materialized.
             </summary>
         </member>
         <member name="F:System.Data.Services.Client.Materialization.ODataMessageReaderMaterializer.SingleResult">
@@ -7277,247 +7573,6 @@
             <summary>
             Materializes entities from a sequence of ODataEntry objects
             </summary>
-        </member>
-        <member name="T:System.Data.Services.Client.Materialization.ODataEntityMaterializer">
-            <summary>
-            Used to materialize entities from a <see cref="T:Microsoft.Data.OData.ODataEntry"/> objects.
-            </summary>
-        </member>
-        <member name="F:System.Data.Services.Client.Materialization.ODataEntityMaterializer.currentValue">
-            <summary>The value of the current materialized entity.</summary>
-        </member>
-        <member name="F:System.Data.Services.Client.Materialization.ODataEntityMaterializer.materializeEntryPlan">
-            <summary>The materializer plan.</summary>
-        </member>
-        <member name="F:System.Data.Services.Client.Materialization.ODataEntityMaterializer.entryValueMaterializerPolicy">
-            <summary> The entry value materializer policy. </summary>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.#ctor(System.Data.Services.Client.Materialization.IODataMaterializerContext,System.Data.Services.Client.Materialization.EntityTrackingAdapter,System.Data.Services.Client.QueryComponents,System.Type,System.Data.Services.Client.ProjectionPlan)">
-            <summary>
-            Initializes a new instance of the <see cref="T:System.Data.Services.Client.Materialization.ODataEntityMaterializer"/> class.
-            </summary>
-            <param name="materializerContext">The materializer context.</param>
-            <param name="entityTrackingAdapter">The entity tracking adapter.</param>
-            <param name="queryComponents">The query components.</param>
-            <param name="expectedType">The expected type.</param>
-            <param name="materializeEntryPlan">The materialize entry plan.</param>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.EnumerateAsElementType``1(System.Collections.IEnumerable)">
-            <summary>Enumerates casting each element to a type.</summary>
-            <typeparam name="T">Element type to enumerate over.</typeparam>
-            <param name="source">Element source.</param>
-            <returns>
-            An IEnumerable&lt;T&gt; that iterates over the specified <paramref name="source"/>.
-            </returns>
-            <remarks>
-            This method should be unnecessary with .NET 4.0 covariance support.
-            </remarks>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.EnumerateAsElementTypeInternal``1(System.Collections.IEnumerable)">
-            <summary>Enumerates casting each element to a type.</summary>
-            <typeparam name="T">Element type to enumerate over.</typeparam>
-            <param name="source">Element source.</param>
-            <returns>
-            An IEnumerable&lt;T&gt; that iterates over the specified <paramref name="source"/>.
-            </returns>
-            <remarks>
-            This method should be unnecessary with .NET 4.0 covariance support.
-            </remarks>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ListAsElementType``2(System.Data.Services.Client.Materialization.ODataEntityMaterializer,System.Collections.Generic.IEnumerable{``0})">
-            <summary>Creates a list to a target element type.</summary>
-            <param name="materializer">Materializer used to flow link tracking.</param>
-            <typeparam name="T">Element type to enumerate over.</typeparam>
-            <typeparam name="TTarget">Element type for list.</typeparam>
-            <param name="source">Element source.</param>
-            <returns>
-            An IEnumerable&lt;T&gt; that iterates over the specified <paramref name="source"/>.
-            </returns>
-            <remarks>
-            This method should be unnecessary with .NET 4.0 covariance support.
-            </remarks>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.CreatePlanForDirectMaterialization(System.Type)">
-            <summary>Creates an entry materialization plan that is payload-driven.</summary>
-            <param name="lastSegmentType">Segment type for the entry to materialize (typically last of URI in query).</param>
-            <returns>A payload-driven materialization plan.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.CreatePlanForShallowMaterialization(System.Type)">
-            <summary>Creates an entry materialization plan that is payload-driven and does not traverse expanded links.</summary>
-            <param name="lastSegmentType">Segment type for the entry to materialize (typically last of URI in query).</param>
-            <returns>A payload-driven materialization plan.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ProjectionCheckValueForPathIsNull(System.Data.Services.Client.Materialization.MaterializerEntry,System.Type,System.Data.Services.Client.ProjectionPath)">
-            <summary>Checks whether the entity on the specified <paramref name="path"/> is null.</summary>
-            <param name="entry">Root entry for paths.</param>
-            <param name="expectedType">Expected type for <paramref name="entry"/>.</param>
-            <param name="path">Path to pull value for.</param>
-            <returns>Whether the specified <paramref name="path"/> is null.</returns>
-            <remarks>
-            This method will not instantiate entity types on the path.
-            Note that if the target is a collection, the result is always false,
-            as the model does not allow null feeds (but instead gets an empty
-            collection, possibly with continuation tokens and such).
-            </remarks>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ProjectionSelect(System.Data.Services.Client.Materialization.ODataEntityMaterializer,System.Data.Services.Client.Materialization.MaterializerEntry,System.Type,System.Type,System.Data.Services.Client.ProjectionPath,System.Func{System.Object,System.Object,System.Type,System.Object})">
-            <summary>Provides support for Select invocations for projections.</summary>
-            <param name="materializer">Materializer under which projection is taking place.</param>
-            <param name="entry">Root entry for paths.</param>
-            <param name="expectedType">Expected type for <paramref name="entry"/>.</param>
-            <param name="resultType">Expected result type.</param>
-            <param name="path">Path to traverse.</param>
-            <param name="selector">Selector callback.</param>
-            <returns>An enumerable with the select results.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ProjectionGetEntry(System.Data.Services.Client.Materialization.MaterializerEntry,System.String)">
-            <summary>Provides support for getting payload entries during projections.</summary>
-            <param name="entry">Entry to get sub-entry from.</param>
-            <param name="name">Name of sub-entry.</param>
-            <returns>The sub-entry (never null).</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ProjectionInitializeEntity(System.Data.Services.Client.Materialization.ODataEntityMaterializer,System.Data.Services.Client.Materialization.MaterializerEntry,System.Type,System.Type,System.String[],System.Func{System.Object,System.Object,System.Type,System.Object}[])">
-            <summary>Initializes a projection-driven entry (with a specific type and specific properties).</summary>
-            <param name="materializer">Materializer under which projection is taking place.</param>
-            <param name="entry">Root entry for paths.</param>
-            <param name="expectedType">Expected type for <paramref name="entry"/>.</param>
-            <param name="resultType">Expected result type.</param>
-            <param name="properties">Properties to materialize.</param>
-            <param name="propertyValues">Functions to get values for functions.</param>
-            <returns>The initialized entry.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ProjectionEnsureEntryAvailableOfType(System.Data.Services.Client.Materialization.ODataEntityMaterializer,System.Data.Services.Client.Materialization.MaterializerEntry,System.Type)">
-            <summary>
-            Ensures that an entry of <paramref name="requiredType"/> is 
-            available on the specified <paramref name="entry"/>.
-            </summary>
-            <param name="materializer">Materilizer used for logging. </param>
-            <param name="entry">Entry to ensure.</param>
-            <param name="requiredType">Required type.</param>
-            <remarks>
-            As the 'Projection' suffix suggests, this method should only
-            be used during projection operations; it purposefully avoid
-            "source tree" type usage and POST reply entry resolution.
-            </remarks>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.DirectMaterializePlan(System.Data.Services.Client.Materialization.ODataEntityMaterializer,System.Data.Services.Client.Materialization.MaterializerEntry,System.Type)">
-            <summary>Materializes an entry with no special selection.</summary>
-            <param name="materializer">Materializer under which materialization should take place.</param>
-            <param name="entry">Entry with object to materialize.</param>
-            <param name="expectedEntryType">Expected type for the entry.</param>
-            <returns>The materialized instance.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ShallowMaterializePlan(System.Data.Services.Client.Materialization.ODataEntityMaterializer,System.Data.Services.Client.Materialization.MaterializerEntry,System.Type)">
-            <summary>Materializes an entry without including in-lined expanded links.</summary>
-            <param name="materializer">Materializer under which materialization should take place.</param>
-            <param name="entry">Entry with object to materialize.</param>
-            <param name="expectedEntryType">Expected type for the entry.</param>
-            <returns>The materialized instance.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ProjectionValueForPath(System.Data.Services.Client.Materialization.MaterializerEntry,System.Type,System.Data.Services.Client.ProjectionPath)">
-            <summary>Projects a simple value from the specified <paramref name="path"/>.</summary>
-            <param name="entry">Root entry for paths.</param>
-            <param name="expectedType">Expected type for <paramref name="entry"/>.</param>
-            <param name="path">Path to pull value for.</param>
-            <returns>The value for the specified <paramref name="path"/>.</returns>
-            <remarks>
-            This method will not instantiate entity types, except to satisfy requests
-            for payload-driven feeds or leaf entities.
-            </remarks>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ClearLog">
-            <summary>Clears the materialization log of activity.</summary>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ApplyLogToContext">
-            <summary>Applies the materialization log to the context.</summary>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.PropagateContinuation``1(System.Collections.Generic.IEnumerable{``0},System.Data.Services.Client.DataServiceCollection{``0})">
-            <summary>Helper method for constructor of DataServiceCollection.</summary>
-            <typeparam name="T">Element type for collection.</typeparam>
-            <param name="from">The enumerable which has the continuation on it.</param>
-            <param name="to">The DataServiceCollection to apply the continuation to.</param>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ReadImplementation">
-            <summary>
-            Implementation of Read/>.
-            </summary>
-            <returns>
-            Return value of Read/>
-            </returns>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.ReadNextFeedOrEntry">
-            <summary>
-            Reads the next feed or entry.
-            </summary>
-            <returns>True if an entry was read, otherwise false</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.CheckEntryToAccessNotNull(System.Data.Services.Client.Materialization.MaterializerEntry,System.String)">
-            <summary>
-            Checks that the specified <paramref name="entry"/> isn't null.
-            </summary>
-            <param name="entry">Entry to check.</param>
-            <param name="name">Name of entry being accessed.</param>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.CreatePlan(System.Data.Services.Client.QueryComponents)">
-            <summary>Creates an entry materialization plan for a given projection.</summary>
-            <param name="queryComponents">Query components for plan to materialize.</param>
-            <returns>A materialization plan.</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.MaterializeToList(System.Data.Services.Client.Materialization.ODataEntityMaterializer,System.Collections.IEnumerable,System.Type,System.Collections.Generic.IEnumerable{Microsoft.Data.OData.ODataEntry})">
-            <summary>Materializes the result of a projection into a list.</summary>
-            <param name="materializer">Materializer to use for the operation.</param>
-            <param name="list">Target list.</param>
-            <param name="nestedExpectedType">Expected type for nested object.</param>
-            <param name="entries">Entries to materialize from.</param>
-            <remarks>
-            This method supports projections and as such does shallow payload-driven
-            materialization of entities.
-            </remarks>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.GetPropertyOrThrow(System.Collections.Generic.IEnumerable{Microsoft.Data.OData.ODataNavigationLink},System.String)">
-            <summary>Gets a property from the specified <paramref name="links"/> list, throwing if not found.</summary>
-            <param name="links">List to get value from.</param>
-            <param name="propertyName">Property name to look up.</param>
-            <returns>The specified property (never null).</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataEntityMaterializer.MergeLists(System.Data.Services.Client.Materialization.MaterializerEntry,System.Data.Services.Client.Metadata.ClientPropertyAnnotation,System.Collections.IEnumerable,System.Uri,System.Data.Services.Client.ProjectionPlan)">
-            <summary>Merges a list into the property of a given <paramref name="entry"/>.</summary>
-            <param name="entry">Entry to merge into.</param>
-            <param name="property">Property on entry to merge into.</param>
-            <param name="list">List of materialized values.</param>
-            <param name="nextLink">Next link for feed from which the materialized values come from.</param>
-            <param name="plan">Projection plan for the list.</param>
-            <remarks>
-            This method will handle entries that shouldn't be updated correctly.
-            </remarks>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataEntityMaterializer.EntityTrackingAdapter">
-            <summary>
-            Gets the Entity Materializer Context
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataEntityMaterializer.TargetInstance">
-            <summary>
-            Target instance that the materializer expects to update.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataEntityMaterializer.CurrentValue">
-            <summary>
-            Current value being materialized; possibly null.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataEntityMaterializer.MaterializeEntryPlan">
-            <summary>
-            Function to materialize an entry and produce a value.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataEntityMaterializer.EntryValueMaterializationPolicy">
-            <summary>
-            Gets the entry value materialization policy.
-            </summary>
-            <value>
-            The entry value materialization policy.
-            </value>
         </member>
         <member name="F:System.Data.Services.Client.Materialization.ODataEntriesEntityMaterializer.format">
             <summary>The format of the response being materialized.</summary>
@@ -7832,89 +7887,6 @@
         <member name="P:System.Data.Services.Client.Materialization.ODataPropertyMaterializer.CurrentValue">
             <summary>
             Current value being materialized; possibly null.
-            </summary>
-        </member>
-        <member name="T:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer">
-            <summary>
-            Materializes feeds and entities from an ODataReader
-            </summary>
-        </member>
-        <member name="F:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.feedEntryAdapter">
-            <summary>The enty or feed reader.</summary>
-        </member>
-        <member name="F:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.messageReader">
-            <summary>The message reader.</summary>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.#ctor(Microsoft.Data.OData.ODataMessageReader,System.Data.Services.Client.Materialization.ODataReaderWrapper,System.Data.Services.Client.Materialization.IODataMaterializerContext,System.Data.Services.Client.Materialization.EntityTrackingAdapter,System.Data.Services.Client.QueryComponents,System.Type,System.Data.Services.Client.ProjectionPlan)">
-            <summary>
-            Initializes a new instance of the <see cref="T:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer"/> class.
-            </summary>
-            <param name="odataMessageReader">The odata message reader.</param>
-            <param name="reader">The reader.</param>
-            <param name="materializerContext">The materializer context.</param>
-            <param name="entityTrackingAdapter">The entity tracking adapter.</param>
-            <param name="queryComponents">The query components.</param>
-            <param name="expectedType">The expected type.</param>
-            <param name="materializeEntryPlan">The materialize entry plan.</param>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.ParseSingleEntityPayload(Microsoft.Data.OData.IODataResponseMessage,System.Data.Services.Client.ResponseInfo,System.Type)">
-            <summary>
-            This method is for parsing CUD operation payloads which should contain
-            1 a single entry
-            2 An Error
-            </summary>
-            <param name="message">the message for the payload</param>
-            <param name="responseInfo">The current ResponseInfo object</param>
-            <param name="expectedType">The expected type</param>
-            <returns>the MaterializerEntry that was read</returns>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.OnDispose">
-            <summary>
-            Called when IDisposable.Dispose is called.
-            </summary>
-        </member>
-        <member name="M:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.ReadNextFeedOrEntry">
-            <summary>
-            Reads the next feed or entry.
-            </summary>
-            <returns>
-            True if an entry was read, otherwise false
-            </returns>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.CurrentFeed">
-            <summary>
-            Feed being materialized; possibly null.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.CurrentEntry">
-            <summary>
-            Entry being materialized; possibly null.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.IsEndOfStream">
-            <summary>
-            Whether we have finished processing the current data stream.
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.CountValue">
-            <summary>
-            The count tag's value, if requested
-            </summary>
-            <returns>The count value returned from the server</returns>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.IsCountable">
-            <summary>
-            Returns true if the underlying object used for counting is available
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.IsDisposed">
-            <summary>
-            Returns true if the materializer has been disposed
-            </summary>
-        </member>
-        <member name="P:System.Data.Services.Client.Materialization.ODataReaderEntityMaterializer.Format">
-            <summary>
-            The format of the response being materialized.
             </summary>
         </member>
         <member name="T:System.Data.Services.Client.Materialization.ODataValueMaterializer">
@@ -8479,14 +8451,6 @@
             FireSendingRequest2 event.
             </summary>
             <param name="descriptor">Descriptor for which this request is getting generated.</param>
-        </member>
-        <member name="M:System.Data.Services.Client.ODataRequestMessageWrapper.ConvertToDataServiceWebException(System.Net.WebException,System.Data.Services.Client.RequestInfo)">
-            <summary>
-            Convert the WebException into DataServiceWebException.
-            </summary>
-            <param name="webException">WebException instance.</param>
-            <param name="requestInfo">RequestInfo instance.</param>
-            <returns>an instance of DataServiceWebException that abstracts the WebException.</returns>
         </member>
         <member name="P:System.Data.Services.Client.ODataRequestMessageWrapper.Descriptor">
             <summary>
@@ -9255,6 +9219,13 @@
         <member name="F:System.Data.Services.Client.RequestInfo.typeResolver">
             <summary>The type resolver for the current request.</summary>
         </member>
+        <member name="M:System.Data.Services.Client.RequestInfo.#ctor(System.Data.Services.Client.DataServiceContext,System.Boolean)">
+            <summary>
+            Creates a new instance of RequestInfo class which is used to build the request to send to the server
+            </summary>
+            <param name="context">wrapping context instance.</param>
+            <param name="isContinuation">Whether this is a continuation request.</param>
+        </member>
         <member name="M:System.Data.Services.Client.RequestInfo.#ctor(System.Data.Services.Client.DataServiceContext)">
             <summary>
             Creates a new instance of RequestInfo class which is used to build the request to send to the server
@@ -9327,6 +9298,15 @@
             If this parameter is null the default MergeOption value from the context is used.</param>
             <returns>instance of response info class.</returns>
         </member>
+        <member name="M:System.Data.Services.Client.RequestInfo.GetDeserializationInfoForLoadProperty(System.Nullable{System.Data.Services.Client.MergeOption},System.Data.Services.Client.EntityDescriptor,System.Data.Services.Client.Metadata.ClientPropertyAnnotation)">
+            <summary>
+            Returns the instance of LoadPropertyResponseInfo class, which provides information for LoadProperty response handling.
+            </summary>
+            <param name="mergeOption">Merge option to use for conflict handling.</param>
+            <param name="entityDescriptor">Entity whose property is being loaded.</param>
+            <param name="property">Property which is being loaded.</param>
+            <returns>Instance of the LoadPropertyResponseInfo class.</returns>
+        </member>
         <member name="M:System.Data.Services.Client.RequestInfo.ValidateResponseVersion(System.Version)">
             <summary>
             Validates that the response version can be accepted as a response for this request
@@ -9340,50 +9320,11 @@
             </summary>
             <param name="eventArgs">SendingRequestEventArgs instance containing all information about the request.</param>
         </member>
-        <member name="M:System.Data.Services.Client.RequestInfo.InternalSendRequest(System.Net.HttpWebRequest)">
-            <summary>
-            Invokes the sendRequest test hook callback with a reference to the HttpWebRequest
-            </summary>
-            <param name="request">HttpWebRequest to provide in the callback.</param>
-        </member>
-        <member name="M:System.Data.Services.Client.RequestInfo.InternalSendResponse(System.Net.HttpWebResponse)">
-            <summary>
-            Invokes the sendResponse test hook callback with a reference to the HttpWebResponse
-            </summary>
-            <param name="response">HttpWebResponse to provide in the callback.</param>
-        </member>
-        <member name="M:System.Data.Services.Client.RequestInfo.InternalGetRequestWrappingStream(System.IO.Stream)">
-            <summary>
-            Invokes the getRequestWrappingStream test hook callback, so that the test code can wrap the stream and see what gets written to it.
-            </summary>
-            <param name="requestStream">Underlying HTTP stream to be wrapped</param>
-            <returns>
-            If the test hook is being used, returns the stream provided by the callback, otherwise returns the original stream.
-            </returns>
-        </member>
-        <member name="M:System.Data.Services.Client.RequestInfo.InternalGetResponseWrappingStream(System.IO.Stream)">
-            <summary>
-            Invokes the getResponseWrappingStream test hook callback, so that the test code can wrap the stream and see what gets read from it.
-            </summary>
-            <param name="responseStream">Underlying HTTP stream to be wrapped</param>
-            <returns>
-            If the test hook is being used, returns the stream provided by the callback, otherwise returns the original stream.
-            </returns>
-        </member>
         <member name="M:System.Data.Services.Client.RequestInfo.FireSendingRequest2(System.Data.Services.Client.SendingRequest2EventArgs)">
             <summary>
             Fires the SendingRequest2 event.
             </summary>
             <param name="eventArgs">SendingRequest2EventArgs instance containing all information about the request.</param>
-        </member>
-        <member name="M:System.Data.Services.Client.RequestInfo.CreateODataResponseMessage(System.Data.Services.Client.HeaderCollection,System.Int32,System.Func{System.IO.Stream})">
-            <summary>
-            Creates a response message.
-            </summary>
-            <param name="headers">The headers.</param>
-            <param name="statusCode">The status code.</param>
-            <param name="getResponseStream">The callback to get the response stream.</param>
-            <returns>The response message.</returns>
         </member>
         <member name="M:System.Data.Services.Client.RequestInfo.CreateRequestMessage(System.Data.Services.Client.BuildingRequestEventArgs)">
             <summary>
@@ -9408,6 +9349,11 @@
         </member>
         <member name="P:System.Data.Services.Client.RequestInfo.Context">
             <summary>context instance.</summary>
+        </member>
+        <member name="P:System.Data.Services.Client.RequestInfo.IsContinuation">
+            <summary>
+            Whether this is a continuation request.
+            </summary>
         </member>
         <member name="P:System.Data.Services.Client.RequestInfo.TypeScheme">
             <summary>Gets the URI used to indicate what type scheme is used by the service.</summary>
@@ -9450,6 +9396,12 @@
         <member name="P:System.Data.Services.Client.RequestInfo.HasSendingRequest2EventHandlers">
             <summary>
             Returns true if there are subscribers to SendingRequest event.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.RequestInfo.UserModifiedRequestInBuildingRequest">
+            <summary>
+            True if the user could have modified a part of the request. This lets us turn off assertions that normally
+            prevent us from making certain mistakes we don't mind the user intentionally ignoring.
             </summary>
         </member>
         <member name="P:System.Data.Services.Client.RequestInfo.Credentials">
@@ -9520,6 +9472,11 @@
         <member name="P:System.Data.Services.Client.ResponseInfo.ReadHelper">
             <summary>The reading helper to use.</summary>
         </member>
+        <member name="P:System.Data.Services.Client.ResponseInfo.IsContinuation">
+            <summary>
+            Whether this is a continuation request.
+            </summary>
+        </member>
         <member name="P:System.Data.Services.Client.ResponseInfo.TypeScheme">
             <summary>Override the namespace used for the scheme in the category for ATOM entries.</summary>
         </member>
@@ -9563,6 +9520,30 @@
         <member name="P:System.Data.Services.Client.ResponseInfo.ResponsePipeline">
             <summary>
             Gets the reading pipeline configuration
+            </summary>
+        </member>
+        <member name="T:System.Data.Services.Client.LoadPropertyResponseInfo">
+            <summary>
+            Information used for handling response to a LoadProperty request.
+            </summary>
+        </member>
+        <member name="M:System.Data.Services.Client.LoadPropertyResponseInfo.#ctor(System.Data.Services.Client.RequestInfo,System.Data.Services.Client.MergeOption,System.Data.Services.Client.EntityDescriptor,System.Data.Services.Client.Metadata.ClientPropertyAnnotation)">
+            <summary>
+            Constructs a new instance.
+            </summary>
+            <param name="requestInfo">Information about the request.</param>
+            <param name="mergeOption">Merge option.</param>
+            <param name="entityDescriptor">Entity whose property is being loaded.</param>
+            <param name="property">Property which is being loaded.</param>
+        </member>
+        <member name="P:System.Data.Services.Client.LoadPropertyResponseInfo.EntityDescriptor">
+            <summary>
+            Entity whose property is being loaded.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.LoadPropertyResponseInfo.Property">
+            <summary>
+            Property being loaded.
             </summary>
         </member>
         <member name="T:System.Data.Services.Client.SendingRequest2EventArgs">
@@ -9665,7 +9646,7 @@
             <summary>Request Url.</summary>
         </member>
         <member name="F:System.Data.Services.Client.HttpWebRequestMessage.effectiveHttpMethod">
-            <summary>Http method.</summary>
+            <summary> The effective HTTP method. </summary>
         </member>
         <member name="F:System.Data.Services.Client.HttpWebRequestMessage.requestInfo">
             <summary>RequestInfo instance.</summary>
@@ -9682,25 +9663,37 @@
         <member name="F:System.Data.Services.Client.HttpWebRequestMessage.inSendingRequest2Event">
             <summary>True if SendingRequest2Event is currently invoked, otherwise false.</summary>
         </member>
+        <member name="M:System.Data.Services.Client.HttpWebRequestMessage.#ctor(System.Data.Services.Client.DataServiceClientRequestMessageArgs)">
+            <summary>
+            Creates a new instance of HttpWebRequestMessage.
+            </summary>
+            <param name="args">Arguments for creating the request message.</param>
+        </member>
         <member name="M:System.Data.Services.Client.HttpWebRequestMessage.#ctor(System.Data.Services.Client.DataServiceClientRequestMessageArgs,System.Data.Services.Client.RequestInfo)">
             <summary>
             Creates a new instance of HttpWebRequestMessage.
             </summary>
             <param name="args">Arguments for creating the request message.</param>
-            <param name="requestInfo">Request Info.</param>
+            <param name="requestInfo">RequestInfo instance.</param>
         </member>
         <member name="M:System.Data.Services.Client.HttpWebRequestMessage.GetHeader(System.String)">
-            <summary> Returns the value of the header with the given name. </summary>
-            <returns>Returns the value of the header with the given name.</returns>
+            <summary>
+            Returns the value of the header with the given name.
+            </summary>
             <param name="headerName">Name of the header.</param>
+            <returns>Returns the value of the header with the given name.</returns>
         </member>
         <member name="M:System.Data.Services.Client.HttpWebRequestMessage.SetHeader(System.String,System.String)">
-            <summary> Sets the value of the header with the given name. </summary>
+            <summary>
+            Sets the value of the header with the given name.
+            </summary>
             <param name="headerName">Name of the header.</param>
             <param name="headerValue">Value of the header.</param>
         </member>
         <member name="M:System.Data.Services.Client.HttpWebRequestMessage.GetStream">
-            <summary> Gets the stream to be used to write the request payload. </summary>
+            <summary>
+            Gets the stream to be used to write the request payload.
+            </summary>
             <returns>Stream to which the request payload needs to be written.</returns>
         </member>
         <member name="M:System.Data.Services.Client.HttpWebRequestMessage.Abort">
@@ -9744,6 +9737,27 @@
             </summary>
             <returns>A System.Net.WebResponse that contains the response from the Internet resource.</returns>
         </member>
+        <member name="M:System.Data.Services.Client.HttpWebRequestMessage.SetHttpWebRequestContentLength(System.Net.HttpWebRequest,System.Int64)">
+            <summary>
+            Sets the Content length of the Http web request
+            </summary>
+            <param name="httpWebRequest">Http web request to set the content length on</param>
+            <param name="contentLength">Length to set</param>
+        </member>
+        <member name="M:System.Data.Services.Client.HttpWebRequestMessage.SetAcceptCharset(System.Net.HttpWebRequest,System.String)">
+            <summary>
+            Sets the accept charset.
+            </summary>
+            <param name="httpWebRequest">The HTTP web request.</param>
+            <param name="headerValue">The header value.</param>
+        </member>
+        <member name="M:System.Data.Services.Client.HttpWebRequestMessage.SetUserAgentHeader(System.Net.HttpWebRequest,System.String)">
+            <summary>
+            Attempts to set the UserAgent property if it exists other wise returns false
+            </summary>
+            <param name="httpWebRequest">The http web request.</param>
+            <param name="headerValue">The value of the user agent.</param>
+        </member>
         <member name="M:System.Data.Services.Client.HttpWebRequestMessage.AddHeadersToReset(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Add the list of header names to the list of headers whose values need to be reset after firing sendingrequest event.
@@ -9760,12 +9774,13 @@
             This method is called immd. after SendingRequest2 event has been fired.
             </summary>
         </member>
-        <member name="M:System.Data.Services.Client.HttpWebRequestMessage.SetHeaderValues(System.Data.Services.Client.HttpWebRequestMessage,System.Data.Services.Client.HeaderCollection)">
+        <member name="M:System.Data.Services.Client.HttpWebRequestMessage.SetHeaderValues(System.Data.Services.Client.HttpWebRequestMessage,System.Data.Services.Client.HeaderCollection,System.String)">
             <summary>
             Set the header values on the request.
             </summary>
             <param name="requestMessage">IODataRequestMessage instance containing all the headers.</param>
             <param name="cachedHeaders">Dictionary of cached headers.</param>
+            <param name="effectiveHttpMethod">The Effective http method.</param>
         </member>
         <member name="M:System.Data.Services.Client.HttpWebRequestMessage.CreateRequest(System.String,System.Uri,System.Data.Services.Client.DataServiceClientRequestMessageArgs)">
             <summary>
@@ -9795,6 +9810,13 @@
             <param name="headerName">Name of the header.</param>
             <returns>the value of the header with the given name.</returns>
         </member>
+        <member name="M:System.Data.Services.Client.HttpWebRequestMessage.ConvertToDataServiceWebException(System.Net.WebException)">
+            <summary>
+            Convert the WebException into DataServiceWebException.
+            </summary>
+            <param name="webException">WebException instance.</param>
+            <returns>an instance of DataServiceWebException that abstracts the WebException.</returns>
+        </member>
         <member name="M:System.Data.Services.Client.HttpWebRequestMessage.FireSendingRequest">
             <summary>
             Fire SendingRequest event if its conditions are met. 
@@ -9814,10 +9836,20 @@
         <member name="P:System.Data.Services.Client.HttpWebRequestMessage.HttpWebRequest">
             <summary> Returns the underlying HttpWebRequest </summary>
         </member>
-        <member name="P:System.Data.Services.Client.HttpWebRequestMessage.UserModifiedRequestInBuildingRequest">
+        <member name="P:System.Data.Services.Client.HttpWebRequestMessage.Credentials">
             <summary>
-            True if the user could have modified a part of the request. This lets us turn off assertions that normally
-            prevent us from making certain mistakes we don't mind the user intentionally ignoring.
+            Gets or set the credentials for this request.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.HttpWebRequestMessage.Timeout">
+            <summary>
+            Gets or sets the timeout (in seconds) for this request.
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.HttpWebRequestMessage.SendChunked">
+            <summary>
+            Gets or sets a value that indicates whether to send data in segments to the
+             Internet resource. 
             </summary>
         </member>
         <member name="T:System.Data.Services.Client.HttpWebResponseMessage">
@@ -9834,9 +9866,6 @@
         <member name="F:System.Data.Services.Client.HttpWebResponseMessage.statusCode">
             <summary>The response status code.</summary>
         </member>
-        <member name="F:System.Data.Services.Client.HttpWebResponseMessage.requestInfo">
-            <summary>RequestInfo instance.</summary>
-        </member>
         <member name="F:System.Data.Services.Client.HttpWebResponseMessage.httpWebResponse">
             <summary>HttpWebResponse instance.</summary>
         </member>
@@ -9848,21 +9877,19 @@
             <param name="statusCode">The status code.</param>
             <param name="getResponseStream">A function returning the response stream.</param>
         </member>
-        <member name="M:System.Data.Services.Client.HttpWebResponseMessage.#ctor(System.Data.Services.Client.HeaderCollection,System.Int32,System.Func{System.IO.Stream},System.Data.Services.Client.RequestInfo)">
+        <member name="M:System.Data.Services.Client.HttpWebResponseMessage.#ctor(System.Net.HttpWebResponse)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="httpResponse">HttpWebResponse instance.</param>
+        </member>
+        <member name="M:System.Data.Services.Client.HttpWebResponseMessage.#ctor(System.Data.Services.Client.HeaderCollection,System.Int32,System.Func{System.IO.Stream})">
             <summary>
             Constructor.
             </summary>
             <param name="headers">The headers.</param>
             <param name="statusCode">The status code.</param>
             <param name="getResponseStream">A function returning the response stream.</param>
-            <param name="requestInfoParameter">RequestInfo instance.</param>
-        </member>
-        <member name="M:System.Data.Services.Client.HttpWebResponseMessage.#ctor(System.Net.HttpWebResponse,System.Data.Services.Client.RequestInfo)">
-            <summary>
-            Constructor.
-            </summary>
-            <param name="httpResponse">The response object to wrap.</param>
-            <param name="requestInfoParameter">RequestInfo instance.</param>
         </member>
         <member name="M:System.Data.Services.Client.HttpWebResponseMessage.GetHeader(System.String)">
             <summary>
@@ -11101,7 +11128,7 @@
             <param name="le">Lambda expression.</param>
             <param name="re">Resource expression in scope.</param>
             <param name="matchMembers">Whether member accesses are matched as top-level projections.</param>
-            <param name="maxProtocolVersion">max protocol version that the client understands.</param>
+            <param name="context">Context of expression to analyze.</param>
             <returns>true if the lambda is a client-side projection; false otherwise.</returns>
         </member>
         <member name="M:System.Data.Services.Client.ProjectionAnalyzer.IsMethodCallAllowedEntitySequence(System.Linq.Expressions.MethodCallExpression)">
@@ -11135,7 +11162,7 @@
             belongs to an entity e.g. c.Orders.Select(o => o), where we allow c.Orders.
             </summary>
             <param name="e">Expression to check.</param>
-            <param name="maxProtocolVersion">max protocol version that the client understands.</param>
+            <param name="model">The client model used.</param>
             <returns>true if expression is disallowed, false otherwise.</returns>
         </member>
         <member name="M:System.Data.Services.Client.ProjectionAnalyzer.Analyze(System.Linq.Expressions.MemberInitExpression,System.Data.Services.Client.PathBox,System.Data.Services.Client.DataServiceContext)">
@@ -11145,7 +11172,7 @@
             </summary>
             <param name="mie">Expression to analyze.</param>
             <param name="pb">Path box where select and expand paths are tracked.</param>
-            <param name="maxProtocolVersion">max protocol version that the client understands.</param>
+            <param name="context">Context of expression to analyze.</param>
         </member>
         <member name="M:System.Data.Services.Client.ProjectionAnalyzer.AnalyzeResourceExpression(System.Linq.Expressions.LambdaExpression,System.Data.Services.Client.ResourceExpression,System.Data.Services.Client.DataServiceContext)">
             <summary>
@@ -11154,7 +11181,7 @@
             </summary>
             <param name="lambda">Lambda expression to analyze.</param>
             <param name="resource">Resource expression to update.</param>
-            <param name="maxProtocolVersion">max protocol version that the client understands.</param>
+            <param name="context">Context of expression to analyze.</param>
         </member>
         <member name="M:System.Data.Services.Client.ProjectionAnalyzer.SkipConverts(System.Linq.Expressions.Expression)">
             <summary>Skips converts and returns the underlying expression.</summary>
@@ -11193,13 +11220,13 @@
             <summary>Initializes a new <see cref="T:System.Data.Services.Client.ProjectionAnalyzer.EntityProjectionAnalyzer"/> instance.</summary>
             <param name="pb">Path-tracking object.</param>
             <param name="type">Type being member-init'ed.</param>
-            <param name="maxProtocolVersion">max protocol version that the client understands.</param>
+            <param name="context">Context of expression to analyze.</param>
         </member>
         <member name="M:System.Data.Services.Client.ProjectionAnalyzer.EntityProjectionAnalyzer.Analyze(System.Linq.Expressions.MemberInitExpression,System.Data.Services.Client.PathBox,System.Data.Services.Client.DataServiceContext)">
             <summary>Analyzes the specified member-init expression.</summary>
             <param name="mie">Expression to analyze.</param>
             <param name="pb">Path-tracking object to store analysis in.</param>
-            <param name="maxProtocolVersion">max protocol version that the client understands.</param>
+            <param name="context">Context of expression to analyze.</param>
         </member>
         <member name="T:System.Data.Services.Client.DataServiceALinqExpressionVisitor">
             <summary>
@@ -12186,7 +12213,7 @@
         <member name="M:System.Data.Services.Client.ResourceBinder.Bind(System.Linq.Expressions.Expression,System.Data.Services.Client.DataServiceContext)">
             <summary>Analyzes and binds the specified expression.</summary>
             <param name="e">Expression to bind.</param>
-            <param name="maxProtocolVersion">max protocol version that the client understands.</param>
+            <param name="context">The context of the expression used for bind.</param>
             <returns>
             The expression with bound nodes (annotated expressions used by 
             the Expression-to-URI translator).
@@ -12217,7 +12244,7 @@
         <member name="M:System.Data.Services.Client.ResourceBinder.AnalyzePredicate(System.Linq.Expressions.MethodCallExpression,System.Data.Services.Client.ClientEdmModel)">
             <summary>Analyzes a predicate (Where clause).</summary>
             <param name="mce"><see cref="T:System.Linq.Expressions.MethodCallExpression"/> for a Where call.</param>
-            <param name="maxProtocolVersion">max protocol version that the client understands.</param>
+            <param name="model">The model.</param>
             <returns>
             An equivalent expression to <paramref name="mce"/>, possibly a different one with additional annotations.
             </returns>
@@ -12295,7 +12322,7 @@
             </summary>
             <param name="selectManyCall">SelectMany method to analyze.</param>
             <param name="sourceResourceSet">Source resource set for SelectMany result.</param>
-            <param name="maxProtocolVersion">max protocol version that the client understands.</param>
+            <param name="context">Context of expression to analyze.</param>
             <returns>The visited expression.</returns>
             <remarks>
             The <paramref name="sourceResourceSet"/> expression represents the
@@ -12618,7 +12645,7 @@
         <member name="M:System.Data.Services.Client.ResourceBinder.PatternRules.MatchSetNavigationProperty(System.Linq.Expressions.Expression,System.Data.Services.Client.ClientEdmModel)">
             <summary>Checks whether the type of the specified expression could represent a set of related resources.</summary>
             <param name="e">Expression to check.</param>
-            <param name="maxProtocolVersion">max protocol version that the client understands.</param>
+            <param name="model">The model that the client uses.</param>
             <returns>true if the type of the expression could represent a set of related resources; false otherwise.</returns>
         </member>
         <member name="M:System.Data.Services.Client.ResourceBinder.PatternRules.MatchNullCheck(System.Linq.Expressions.Expression,System.Linq.Expressions.ConditionalExpression)">
@@ -16370,9 +16397,6 @@
             Use this class to materialize objects from an application/atom+xml stream.
             </summary>
         </member>
-        <member name="F:System.Data.Services.Client.MaterializeAtom.MergeOptionValue">
-            <summary>MergeOption captured from context so its static for the entire materialization</summary>
-        </member>
         <member name="F:System.Data.Services.Client.MaterializeAtom.responseInfo">
             <summary>Backreference to the context to allow type resolution.</summary>
         </member>
@@ -16412,6 +16436,7 @@
             <param name="queryComponents">Query components (projection, expected type)</param>
             <param name="plan">Projection plan (if compiled in an earlier query).</param>
             <param name="responseMessage">responseMessage</param>
+            <param name="payloadKind">The kind of the payload to materialize.</param>
         </member>
         <member name="M:System.Data.Services.Client.MaterializeAtom.#ctor(System.Data.Services.Client.ResponseInfo,System.Collections.Generic.IEnumerable{Microsoft.Data.OData.ODataEntry},System.Type,Microsoft.Data.OData.ODataFormat)">
             <summary>
@@ -16444,6 +16469,7 @@
             </summary>
             <param name="expectingPrimitiveValue">Whether the expected is a primitive type.</param>
             <param name="elementType">Actual type on the client.</param>
+            <param name="model">The client model used.</param>
             <param name="implementationType">The actual type that implements ICollection&lt;&gt;</param>
             <returns>Type of the instances that will be returned by materializer.</returns>
             <remarks>
@@ -16474,11 +16500,13 @@
             <summary>
              Creates materializer for results
             </summary>
+            <param name="context">Context of expression to analyze.</param>
             <param name="results">the results to wrap</param>
             <returns>a new materializer</returns>
         </member>
         <member name="M:System.Data.Services.Client.MaterializeAtom.CreateWrapper(System.Data.Services.Client.DataServiceContext,System.Collections.IEnumerable,System.Data.Services.Client.DataServiceQueryContinuation)">
             <summary>Creates a materializer for partial result sets.</summary>
+            <param name="context">Context of expression to analyze.</param>
             <param name="results">The current page of results</param>
             <param name="continuation">The continuation for the results.</param>
             <returns>A new materializer.</returns>
@@ -16543,6 +16571,7 @@
             <summary>
             Creates a wrapper for raw results
             </summary>
+            <param name="context">Context of expression to analyze.</param>
             <param name="results">the results to wrap</param>
             <param name="continuation">The continuation for this query.</param>
         </member>
@@ -16598,6 +16627,15 @@
             <param name="isTracking">True if the contents of the entry will be tracked in the context, otherwise False.</param>
             <param name="model">The client model.</param>
         </member>
+        <member name="M:System.Data.Services.Client.Materialization.MaterializerEntry.#ctor(System.Data.Services.Client.EntityDescriptor,Microsoft.Data.OData.ODataFormat,System.Boolean)">
+            <summary>
+            Creates a new instance of MaterializerEntry using the given entity descriptor for LoadProperty.
+            </summary>
+            <param name="entityDescriptor">Entity descriptor.</param>
+            <param name="format">OData Format.</param>
+            <param name="isTracking">Whether this entity is being tracked.</param>
+            <remarks>Use this constructor only for LoadProperty scenario.</remarks>
+        </member>
         <member name="M:System.Data.Services.Client.Materialization.MaterializerEntry.CreateEmpty">
             <summary>
             Creates an empty entry.
@@ -16612,6 +16650,15 @@
             <param name="format">The format the entry was read in.</param>
             <param name="isTracking">True if the contents of the entry will be tracked in the context, otherwise False.</param>
             <param name="model">The client model.</param>
+            <returns>A new materializer entry.</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Materialization.MaterializerEntry.CreateEntryForLoadProperty(System.Data.Services.Client.EntityDescriptor,Microsoft.Data.OData.ODataFormat,System.Boolean)">
+            <summary>
+            Creates the materializer entry for LoadProperty scenario.
+            </summary>
+            <param name="descriptor">The entity descriptor.</param>
+            <param name="format">The format the entry was read in.</param>
+            <param name="isTracking">True if the contents of the entry will be tracked in the context, otherwise False.</param>
             <returns>A new materializer entry.</returns>
         </member>
         <member name="M:System.Data.Services.Client.Materialization.MaterializerEntry.GetEntry(Microsoft.Data.OData.ODataEntry)">
@@ -16686,6 +16733,9 @@
         <member name="P:System.Data.Services.Client.Materialization.MaterializerEntry.CreatedByMaterializer">
             <summary>Whether the materializer has created the ResolvedObject instance.</summary>
         </member>
+        <member name="P:System.Data.Services.Client.Materialization.MaterializerEntry.ForLoadProperty">
+            <summary>Is this entry created for LoadProperty.</summary>
+        </member>
         <member name="P:System.Data.Services.Client.Materialization.MaterializerEntry.NavigationLinks">
             <summary>The navigation links.</summary>
         </member>
@@ -16711,6 +16761,9 @@
         </member>
         <member name="F:System.Data.Services.Client.Materialization.MaterializerEntry.EntryFlags.EntityDescriptorUpdated">
             <summary>Bitmask for MediaLinkEntry flag (value).</summary>
+        </member>
+        <member name="F:System.Data.Services.Client.Materialization.MaterializerEntry.EntryFlags.ForLoadProperty">
+            <summary>Bitmask for LoadProperty scenario.</summary>
         </member>
         <member name="T:System.Data.Services.Client.Materialization.MaterializerFeed">
             <summary>
@@ -17066,6 +17119,17 @@
             </summary>
             <param name="operationDescriptor">the operation descriptor to add.</param>
         </member>
+        <member name="M:System.Data.Services.Client.EntityDescriptor.ClearOperationDescriptors">
+            <summary>
+            Clears all operator descriptors
+            </summary>
+        </member>
+        <member name="M:System.Data.Services.Client.EntityDescriptor.AppendOperationalDescriptors(System.Collections.Generic.IEnumerable{System.Data.Services.Client.OperationDescriptor})">
+            <summary>
+            Appends OperationDescriptors to the existing list of OperationDescriptors
+            </summary>
+            <param name="descriptors">List containing OperationDescriptors to add for this entityDescriptor</param>
+        </member>
         <member name="M:System.Data.Services.Client.EntityDescriptor.TryGetNamedStreamInfo(System.String,System.Data.Services.Client.StreamDescriptor@)">
             <summary>
             Gets the stream info with the given name.
@@ -17291,7 +17355,7 @@
             <summary>default option, using multiple requests to the server stopping on the first failure</summary>
         </member>
         <member name="F:System.Data.Services.Client.SaveChangesOptions.Batch">
-            <summary>save the changes in a single batch request</summary>
+            <summary>save the changes in a single changeset in a batch request.</summary>
         </member>
         <member name="F:System.Data.Services.Client.SaveChangesOptions.ContinueOnError">
             <summary>save all the changes using multiple requests</summary>
@@ -17301,6 +17365,9 @@
         </member>
         <member name="F:System.Data.Services.Client.SaveChangesOptions.PatchOnUpdate">
             <summary>Use PATCH verb when doing update (retains the merge semantics).</summary>
+        </member>
+        <member name="F:System.Data.Services.Client.SaveChangesOptions.BatchWithIndependentOperations">
+            <summary>save each change independently in a batch request.</summary>
         </member>
         <member name="T:System.Data.Services.Client.SaveResult">
             <summary>
@@ -17460,7 +17527,7 @@
             <param name="namedStreamInfo">NamedStreamInfo instance containing information about the stream.</param>
             <returns>An instance of ODataRequestMessage for the given named stream.</returns>
         </member>
-        <member name="P:System.Data.Services.Client.SaveResult.IsBatch">
+        <member name="P:System.Data.Services.Client.SaveResult.IsBatchRequest">
             <summary>returns false since this class handles only non-batch scenarios</summary>
         </member>
         <member name="P:System.Data.Services.Client.SaveResult.ProcessResponsePayload">
@@ -18338,6 +18405,27 @@
             <param name="flag">whether the given flag is set on the options</param>
             <returns>true if the given flag is set, otherwise false.</returns>
         </member>
+        <member name="M:System.Data.Services.Client.Util.IsBatch(System.Data.Services.Client.SaveChangesOptions)">
+            <summary>
+            checks whether any batch flag is set on the options
+            </summary>
+            <param name="options">options as specified by the user.</param>
+            <returns>true if the given flag is set, otherwise false.</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Util.IsBatchWithSingleChangeset(System.Data.Services.Client.SaveChangesOptions)">
+            <summary>
+            checks whether the batch flag is set on the options for the single changeset
+            </summary>
+            <param name="options">options as specified by the user.</param>
+            <returns>true if the given flag is set, otherwise false.</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.Util.IsBatchWithIndependentOperations(System.Data.Services.Client.SaveChangesOptions)">
+            <summary>
+            checks whether the batch flag with independent Operation per change set is set 
+            </summary>
+            <param name="options">options as specified by the user.</param>
+            <returns>true if the given flag is set, otherwise false.</returns>
+        </member>
         <member name="M:System.Data.Services.Client.Util.IncludeLinkState(System.Data.Services.Client.EntityStates)">
             <summary>modified or unchanged</summary>
             <param name="x">state to test</param>
@@ -18389,7 +18477,7 @@
         </member>
         <member name="T:System.Data.Services.Client.DataServiceContext">
             <summary>
-            context
+            The <see cref="T:System.Data.Services.Client.DataServiceContext" /> represents the runtime context of the data service.
             </summary>
         </member>
         <member name="F:System.Data.Services.Client.DataServiceContext.ServiceRootParameterName">
@@ -19435,7 +19523,7 @@
             This event is fired before a request is sent to the server, giving
             the handler the opportunity to inspect, adjust and/or replace the
             WebRequest object used to perform the request.
-            When calling BeginSaveChanges and not using SaveChangesOptions.Batch,
+            When calling BeginSaveChanges and not using SaveChangesOptions.Batch and SaveChangesOptions.BatchWithIndependentOperations,
             this event may be raised from a different thread.
             </remarks>
         </member>
@@ -19446,7 +19534,7 @@
             WebRequest object used to perform the request.
             </summary>
             <remarks>
-            When calling BeginSaveChanges and not using SaveChangesOptions.Batch,
+            When calling BeginSaveChanges and not using SaveChangesOptions.Batch and SaveChangesOptions.BatchWithIndependentOperations,
             this event may be raised from a different thread.
             </remarks>
         </member>
@@ -19460,7 +19548,7 @@
             in SendingRequest2.
             </summary>
             <remarks>
-            When calling BeginSaveChanges and not using SaveChangesOptions.Batch,
+            When calling BeginSaveChanges and not using SaveChangesOptions.Batch and SaveChangesOptions.BatchWithIndependentOperations,
             this event may be raised from a different thread.
             </remarks>
         </member>
@@ -19493,7 +19581,7 @@
             the network for a request, giving handlers an opportunity to
             customize the entry with information from the corresponding
             .NET object or the environment.
-            When calling BeginSaveChanges and not using SaveChangesOptions.Batch,
+            When calling BeginSaveChanges and not using SaveChangesOptions.Batch and SaveChangesOptions.BatchWithIndependentOperations,
             this event may be raised from a different thread.
             </remarks>
         </member>
@@ -19544,13 +19632,13 @@
             <returns>The base authentication interface for retrieving credentials for Web client authentication.</returns>
         </member>
         <member name="P:System.Data.Services.Client.DataServiceContext.MergeOption">
-            <summary>
+            <summary>Gets or sets the synchronization option for receiving entities from a data service.</summary>
+            <returns>One of the members of the <see cref="T:System.Data.Services.Client.MergeOption"/> enumeration.</returns>
+            <remarks>
             Used to specify a synchronization strategy when sending/receiving entities to/from a data service.
             This value is read by the deserialization component of the client prior to materializing objects.
             As such, it is recommended to set this property to the appropriate materialization strategy
             before executing any queries/updates to the data service.
-            </summary>
-            <remarks>
             The default value is <see cref="P:System.Data.Services.Client.DataServiceContext.MergeOption"/>.AppendOnly.
             </remarks>
         </member>
@@ -20562,6 +20650,13 @@
             <param name="text">String that needs seconds padding</param>
             <returns>DateTime string after adding seconds padding</returns>
         </member>
+        <member name="M:System.Data.Services.Client.PlatformHelper.ConvertDateTimeToStringInternal(System.DateTime)">
+            <summary>
+            Converts the DateTime to a string, internal method.
+            </summary>
+            <param name="dateTime">DateTime to convert to String.</param>
+            <returns>Converted String.</returns>
+        </member>
         <member name="M:System.Data.Services.Client.PlatformHelper.ConvertDateTimeToString(System.DateTime)">
             <summary>
             Converts a DateTime to a string.
@@ -20583,6 +20678,13 @@
             </summary>
             <param name="type">Type on which to call this helper method.</param>
             <returns>TypeCode representing the specified type.</returns>
+        </member>
+        <member name="M:System.Data.Services.Client.PlatformHelper.GetUnicodeCategory(System.Char)">
+            <summary>
+            Gets the Unicode Category of the specified character.
+            </summary>
+            <param name="c">Character to get category of.</param>
+            <returns>Category of the character.</returns>
         </member>
         <member name="M:System.Data.Services.Client.PlatformHelper.IsProperty(System.Reflection.MemberInfo)">
             <summary>
@@ -20655,6 +20757,15 @@
             <param name="argTypes">Array of argument types for the constructor.</param>
             <returns>ConstructorInfo for the constructor with the specified characteristics if found, otherwise null.</returns>
         </member>
+        <member name="M:System.Data.Services.Client.PlatformHelper.TryGetMethod(System.Type,System.String,System.Type[],System.Reflection.MethodInfo@)">
+            <summary>
+            Tries to the get method from the type, returns null if not found.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="name">The name.</param>
+            <param name="parameterTypes">The parameter types.</param>
+            <returns>Returns True if found.</returns>
+        </member>
         <member name="M:System.Data.Services.Client.PlatformHelper.GetMethod(System.Type,System.String,System.Boolean,System.Boolean)">
             <summary>
             Gets a method on the specified type.
@@ -20690,36 +20801,34 @@
             <param name="type">Type on which to call this helper method.</param>
             <returns>All types nested in the current type</returns>
         </member>
-        <member name="T:DataFxAssemblyRef">
-            <summary>Current assembly reference</summary>
-            <remarks>DO NOT FORGET TO ALSO UPDATE AssemblyRefs.vb</remarks>
+        <member name="M:System.Data.Services.Client.PlatformHelper.CreateCompiled(System.String,System.Text.RegularExpressions.RegexOptions)">
+            <summary>
+            Creates a Compiled Regex expression
+            </summary>
+            <param name="pattern">Pattern to match.</param>
+            <param name="options">Options to use.</param>
+            <returns>Regex expression to match supplied patter</returns>
+            <remarks>Is marked as compiled option only in platforms otherwise RegexOption.None is used</remarks>
         </member>
-        <member name="T:DataFxAssemblyRef.Name">
-            <summary>Current assembly names</summary>
+        <member name="T:AssemblyRef">
+            <summary>
+            Sets public key string for friend assemblies.
+            </summary>
         </member>
-        <member name="T:DataFxAssemblyRef.File">
-            <summary>Current assembly file names</summary>
+        <member name="F:AssemblyRef.ProductPublicKey">
+            <summary>ProductPublicKey is an official MS supported public key for external releases.</summary>
         </member>
-        <member name="F:DataFxAssemblyRef.File.DotNetFrameworkV4_ClientReferenceAssemblyPath">
-            <summary>where to find desktop reference client sku reference assemblies</summary>
+        <member name="F:AssemblyRef.TestPublicKey">
+            <summary>TestPublicKey is an unsupported strong key for testing and internal use only</summary>
         </member>
-        <member name="F:DataFxAssemblyRef.File.DotNetFrameworkV4_ReferenceAssemblyPath">
-            <summary>where to find desktop reference extended sku reference assemblies</summary>
+        <member name="F:AssemblyRef.ProductPublicKeyToken">
+            <summary>Dont know what this is</summary>
         </member>
-        <member name="F:DataFxAssemblyRef.File.DotNetFrameworkV4_InstallPath">
-            <summary>where find executable binaries</summary>
+        <member name="F:AssemblyRef.OfficialSilverLightPublicKeyToken">
+            <summary>Used for comparison with external assemblies for silverlight like Microsoft.VisualBasic.</summary>
         </member>
-        <member name="F:DataFxAssemblyRef.File.DS_SilverlightReferenceAssemblyPath">
-            <summary>where to find silverlight reference assemblies</summary>
-        </member>
-        <member name="P:DataFxAssemblyRef.File.EF_InstallPath">
-            <summary>where find executable binaries</summary>
-        </member>
-        <member name="P:DataFxAssemblyRef.File.EF_ReferenceAssemblyPath">
-            <summary>where to find desktop reference assemblies</summary>
-        </member>
-        <member name="P:DataFxAssemblyRef.File.DE_ReferenceAssemblyPath">
-            <summary>where to find desktop reference assemblies</summary>
+        <member name="F:AssemblyRef.OfficialDesktopPublicKeyToken">
+            <summary>Used for comparison with external assemblies for desktop like Microsoft.VisualBasic.</summary>
         </member>
         <member name="T:System.Data.Services.Client.TextRes">
              <summary>
@@ -21293,7 +21402,11 @@
             A string like "There is a type mismatch between the client and the service. Type '{0}' is not an entity type, but the type in the response payload represents an entity type. Please ensure that types defined on the client match the data model of the service, or update the service reference on the client."
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:System.Data.Services.Client.Strings.AtomMaterializer_CollectionExpectedCollection(System.Object)" -->
+        <member name="M:System.Data.Services.Client.Strings.AtomMaterializer_CollectionExpectedCollection(System.Object)">
+            <summary>
+            A string like "Materialization of top level collection expected ICollection&lt;&gt;, but actual type was {0}."
+            </summary>
+        </member>
         <member name="M:System.Data.Services.Client.Strings.AtomMaterializer_InvalidResponsePayload(System.Object)">
             <summary>
             A string like "The response payload is a not a valid response payload. Please make sure that the top level element is a valid Atom or JSON element or belongs to '{0}' namespace."
@@ -21436,7 +21549,7 @@
         </member>
         <member name="P:System.Data.Services.Client.Strings.Context_BatchNotSupportedForNamedStreams">
             <summary>
-            A string like "Changes cannot be saved as a batch when an entity has one or more streams associated with it. Retry the SaveChanges operation without enabling the SaveChangesOptions.Batch option."
+            A string like "Changes cannot be saved as a batch when an entity has one or more streams associated with it. Retry the SaveChanges operation without enabling the SaveChangesOptions.Batch and the SaveChangesOptions.BatchWithIndependentOperations options."
             </summary>
         </member>
         <member name="P:System.Data.Services.Client.Strings.Content_EntityWithoutKey">
@@ -21529,7 +21642,11 @@
             A string like "Saving entities with the [MediaEntry] attribute is not currently supported in batch mode. Use non-batched mode instead."
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:System.Data.Services.Client.Strings.Context_UnexpectedZeroRawRead" -->
+        <member name="P:System.Data.Services.Client.Strings.Context_UnexpectedZeroRawRead">
+            <summary>
+            A string like "Unexpected result (&lt;= 0) from stream.Read() while reading raw data for this property."
+            </summary>
+        </member>
         <member name="P:System.Data.Services.Client.Strings.Context_ChildResourceExists">
             <summary>
             A string like "Attempt to delete a link between two objects failed because the identity of the target object of the link depends on the source object of the link."
@@ -21615,6 +21732,11 @@
             A string like "DataServiceContext.Configurations.RequestPipeline.OnMessageCreating property must not return a null value. Please return a non-null value for this property."
             </summary>
         </member>
+        <member name="P:System.Data.Services.Client.Strings.Context_SendingRequest_InvalidWhenUsingOnMessageCreating">
+            <summary>
+            A string like "SendingRequest cannot be used in combination with the DataServiceContext.Configurations.RequestPipeline.OnMessageCreating property. Please use SendingRequest2 with DataServiceContext.Configurations.RequestPipeline.OnMessageCreating property instead."
+            </summary>
+        </member>
         <member name="P:System.Data.Services.Client.Strings.DataServiceClientFormat_AtomEventsOnlySupportedWithAtomFormat">
             <summary>
             A string like "The ReadingEntity and WritingEntity events are only supported when using the Atom format. Use the Atom format or remove all registered handlers for these events before enabling another format."
@@ -21635,7 +21757,11 @@
             A string like "To use the JSON format, you must first call DataServiceContext.Format.UseJson() and supply a valid service model."
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:System.Data.Services.Client.Strings.ClientType_MultipleImplementationNotSupported" -->
+        <member name="P:System.Data.Services.Client.Strings.ClientType_MultipleImplementationNotSupported">
+            <summary>
+            A string like "Multiple implementations of ICollection&lt;T&gt; is not supported."
+            </summary>
+        </member>
         <member name="P:System.Data.Services.Client.Strings.ClientType_CollectionOfCollectionNotSupported">
             <summary>
             A string like "Collection properties of a collection type are not supported."
@@ -21881,7 +22007,11 @@
             A string like "The target type for an OfType filter could not be determined."
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:System.Data.Services.Client.Strings.ALinq_CannotUseTypeFiltersMultipleTimes" -->
+        <member name="P:System.Data.Services.Client.Strings.ALinq_CannotUseTypeFiltersMultipleTimes">
+            <summary>
+            A string like "Non-redundant type filters (OfType&lt;T&gt;, C# 'as' and VB 'TryCast') can only be used once per resource set."
+            </summary>
+        </member>
         <member name="P:System.Data.Services.Client.Strings.ALinq_TypeAsNotSupportedForMaxDataServiceVersionLessThan3">
             <summary>
             A string like "The expression 'TypeAs' is not supported when MaxProtocolVersion is less than '3.0'."
@@ -21950,6 +22080,11 @@
         <member name="P:System.Data.Services.Client.Strings.AtomMaterializer_ResetAfterEnumeratorCreationError">
             <summary>
             A string like "Reset should never be called for collection reader in an internal enumerable."
+            </summary>
+        </member>
+        <member name="P:System.Data.Services.Client.Strings.DataServiceQuery_EnumerationNotSupported">
+            <summary>
+            A string like "This target framework does not enable you to directly enumerate over a data service query. This is because enumeration automatically sends a synchronous request to the data service. Because this framework only supports asynchronous operations, you must instead call the BeginExecute and EndExecute methods to obtain a query result that supports enumeration."
             </summary>
         </member>
         <member name="P:System.Data.Services.Client.Strings.Context_SendingRequestEventArgsNotHttp">
